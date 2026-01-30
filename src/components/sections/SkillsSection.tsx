@@ -1,37 +1,48 @@
-import { Cpu, Shield, Code } from "lucide-react";
+import { Cpu, Shield, Code, Wrench, Database, Terminal } from "lucide-react";
 import SkillBar from "../SkillBar";
 
 const skillCategories = [
   {
-    title: "Core",
+    title: "Security",
     icon: Shield,
     color: "text-neon-green",
     skills: [
       { name: "Network Security", level: 90, variant: "green" as const },
-      { name: "Linux (Arch/Debian)", level: 85, variant: "green" as const },
-      { name: "Digital Forensics", level: 80, variant: "green" as const },
+      { name: "Digital Forensics", level: 85, variant: "green" as const },
+      { name: "Bug Bounty", level: 80, variant: "green" as const },
     ],
   },
   {
-    title: "Ops",
+    title: "Operations",
     icon: Cpu,
     color: "text-electric-purple",
     skills: [
-      { name: "Blue Team Operations", level: 85, variant: "purple" as const },
-      { name: "Vulnerability Assessment", level: 80, variant: "purple" as const },
-      { name: "Bug Bounty", level: 70, variant: "purple" as const },
+      { name: "OSINT Investigation", level: 90, variant: "purple" as const },
+      { name: "Dark Web Intel", level: 85, variant: "purple" as const },
+      { name: "Blue Team Ops", level: 80, variant: "purple" as const },
     ],
   },
   {
-    title: "Code",
+    title: "Development",
     icon: Code,
     color: "text-signal-red",
     skills: [
-      { name: "Python", level: 90, variant: "red" as const },
-      { name: "Rust", level: 60, variant: "red" as const },
-      { name: "Bash", level: 85, variant: "red" as const },
+      { name: "Python", level: 92, variant: "red" as const },
+      { name: "Bash/Shell", level: 88, variant: "red" as const },
+      { name: "Rust", level: 65, variant: "red" as const },
     ],
   },
+];
+
+const techStack = [
+  // Languages
+  "Python", "Rust", "Bash", "PowerShell", "C",
+  // Security Tools
+  "Kali Linux", "Kali NetHunter", "Burp Suite", "Metasploit", "Wireshark", "Nmap",
+  // Forensics
+  "Autopsy", "Volatility", "TheHive",
+  // Platforms
+  "Linux (Arch/Debian)", "Docker", "Git",
 ];
 
 const SkillsSection = () => {
@@ -43,7 +54,7 @@ const SkillsSection = () => {
           <div className="flex items-center gap-3 mb-12">
             <Cpu className="w-6 h-6 text-neon-green" />
             <h2 className="text-3xl md:text-4xl font-mono font-bold">
-              <span className="text-muted-foreground">//</span> Skill_Matrix
+              <span className="text-muted-foreground">//</span> Tech_Stack
             </h2>
           </div>
 
@@ -77,15 +88,22 @@ const SkillsSection = () => {
           </div>
 
           {/* Tech tags */}
-          <div className="mt-12 flex flex-wrap justify-center gap-3">
-            {["Wireshark", "Nmap", "Metasploit", "Burp Suite", "Ghidra", "Autopsy", "TheHive", "MISP"].map((tool) => (
-              <span
-                key={tool}
-                className="px-3 py-1 text-sm font-mono bg-muted/50 border border-border/50 rounded hover:border-neon-green/50 hover:text-neon-green transition-colors cursor-default"
-              >
-                {tool}
-              </span>
-            ))}
+          <div className="mt-12">
+            <h3 className="text-sm font-mono text-muted-foreground mb-4 flex items-center gap-2">
+              <Terminal className="w-4 h-4" />
+              {">"} cat ~/tools_and_tech.txt
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {techStack.map((tool, index) => (
+                <span
+                  key={tool}
+                  className="px-3 py-1 text-sm font-mono bg-muted/50 border border-border/50 rounded hover:border-neon-green/50 hover:text-neon-green transition-colors cursor-default opacity-0 animate-fade-in-up"
+                  style={{ animationDelay: `${index * 30}ms`, animationFillMode: "forwards" }}
+                >
+                  {tool}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>

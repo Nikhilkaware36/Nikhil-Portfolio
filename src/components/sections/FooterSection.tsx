@@ -1,4 +1,4 @@
-import { Terminal, Github, Linkedin, Mail } from "lucide-react";
+import { Terminal, Github, Linkedin, Mail, Instagram } from "lucide-react";
 
 const FooterSection = () => {
   return (
@@ -25,18 +25,31 @@ const FooterSection = () => {
                 <Mail className="w-5 h-5" />
               </a>
               <a
-                href="#"
+                href="https://github.com/Nikhilkaware36"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="p-2 text-muted-foreground hover:text-neon-green transition-colors"
                 aria-label="GitHub"
               >
                 <Github className="w-5 h-5" />
               </a>
               <a
-                href="#"
-                className="p-2 text-muted-foreground hover:text-neon-green transition-colors"
+                href="https://www.linkedin.com/in/nikhil-kaware-0709482b5"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 text-muted-foreground hover:text-electric-purple transition-colors"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-5 h-5" />
+              </a>
+              <a
+                href="https://www.instagram.com/nikhil.kaware.3/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 text-muted-foreground hover:text-signal-red transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram className="w-5 h-5" />
               </a>
             </div>
           </div>
