@@ -1,4 +1,4 @@
-import { User, Target, Lock, Globe, Bug, Brain } from "lucide-react";
+import { User, Target, Globe, Bug, BookOpen, GraduationCap } from "lucide-react";
 import TerminalCard from "../TerminalCard";
 
 const AboutSection = () => {
@@ -17,33 +17,57 @@ const AboutSection = () => {
           <TerminalCard title="about.md" className="mb-8">
             <div className="space-y-6">
               <p className="text-lg leading-relaxed text-foreground/90">
-                🔭 Currently working on <span className="text-electric-purple font-semibold">dark web investigations</span>,{" "}
-                <span className="text-electric-purple font-semibold">OSINT research</span>, and{" "}
-                <span className="text-neon-green font-semibold">real-world AI/ML security projects</span>.
+                Cybersecurity professional with practical experience in{" "}
+                <span className="text-signal-red font-semibold">digital forensics</span>,{" "}
+                <span className="text-signal-red font-semibold">bug bounty</span>,{" "}
+                <span className="text-electric-purple font-semibold">OSINT</span>, and{" "}
+                <span className="text-electric-purple font-semibold">dark web investigations</span>.
               </p>
               <p className="text-lg leading-relaxed text-foreground/90">
-                🌱 Learning <span className="text-neon-green">deep learning for cybersecurity</span>,{" "}
-                <span className="text-signal-red">digital forensics</span>, and{" "}
-                <span className="text-neon-green">advanced Linux internals</span>.
+                Skilled in <span className="text-neon-green">vulnerability identification</span>,{" "}
+                <span className="text-neon-green">threat analysis</span>, and{" "}
+                <span className="text-neon-green">evidence awareness</span> while supporting real-world cyber investigation workflows.
               </p>
-              <p className="text-lg leading-relaxed text-foreground/90">
-                💬 Ask me about <span className="text-signal-red">bug bounty</span>,{" "}
-                <span className="text-electric-purple">dark web investigations</span>,{" "}
-                <span className="text-electric-purple">OSINT</span>,{" "}
-                <span className="text-neon-green">Kali NetHunter</span>, and{" "}
-                <span className="text-neon-green">security automation tools</span>.
-              </p>
-              <p className="text-sm text-muted-foreground italic font-mono">
-                ⚡ Fun fact: I like building hacker tools for fun before I even think about games 😄
+              <p className="text-base leading-relaxed text-muted-foreground">
+                Technically curious, ethically driven, and detail-oriented with a strong foundation in networking and Linux security concepts. Seeking a formal entry-level cybersecurity role to apply hands-on expertise in a professional environment.
               </p>
             </div>
           </TerminalCard>
 
-          {/* Looking for collaboration */}
-          <div className="mb-8 p-4 bg-electric-purple/5 border border-electric-purple/30 rounded-lg">
-            <p className="text-sm font-mono text-electric-purple">
-              👯 Looking to collaborate on cybersecurity tools, AI-driven security projects, and open-source offensive/defensive tooling
-            </p>
+          {/* Education */}
+          <div className="mb-8 p-4 bg-card border border-border/50 rounded-lg">
+            <div className="flex items-center gap-2 mb-3">
+              <GraduationCap className="w-5 h-5 text-electric-purple" />
+              <h3 className="font-mono font-semibold text-electric-purple">Education</h3>
+            </div>
+            <div className="space-y-2 text-sm font-mono">
+              <div className="flex justify-between items-center">
+                <span className="text-foreground">Diploma in Computer Science</span>
+                <span className="text-muted-foreground">Jun 2023 - May 2027</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-foreground">10th in SSC</span>
+                <span className="text-muted-foreground">Jun 2023</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Languages */}
+          <div className="mb-8 p-4 bg-muted/30 border border-border/50 rounded-lg">
+            <div className="flex items-center gap-2 mb-3">
+              <BookOpen className="w-5 h-5 text-neon-green" />
+              <h3 className="font-mono font-semibold text-neon-green">Languages</h3>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {["English", "Hindi", "Marathi", "Latin", "Spanish"].map((lang) => (
+                <span
+                  key={lang}
+                  className="px-3 py-1 text-xs font-mono bg-neon-green/10 border border-neon-green/30 rounded-full text-neon-green"
+                >
+                  {lang}
+                </span>
+              ))}
+            </div>
           </div>
 
           {/* Mission cards */}
@@ -71,14 +95,6 @@ const AboutSection = () => {
                 Vulnerability hunting and responsible disclosure on live targets.
               </p>
             </div>
-          </div>
-
-          {/* Seeking help with */}
-          <div className="mt-8 p-4 bg-muted/30 border border-border/50 rounded-lg">
-            <p className="text-sm font-mono text-muted-foreground">
-              <span className="text-signal-red">🤝 Seeking expertise in:</span>{" "}
-              Advanced malware analysis, large-scale OSINT automation, and ML for threat detection
-            </p>
           </div>
         </div>
       </div>
