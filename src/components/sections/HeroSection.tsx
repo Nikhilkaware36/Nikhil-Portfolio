@@ -1,6 +1,6 @@
 import GlitchText from "../GlitchText";
 import TypewriterText from "../TypewriterText";
-import { Terminal, Shield, ChevronRight, Github, Linkedin, Instagram } from "lucide-react";
+import { Terminal, Shield, ChevronRight, Github, Linkedin, Instagram, Download, MapPin, Mail } from "lucide-react";
 
 const HeroSection = () => {
   return (
@@ -32,21 +32,33 @@ const HeroSection = () => {
           {/* Typewriter subtitle */}
           <div className="text-xl md:text-2xl text-muted-foreground animate-fade-in-up opacity-0" style={{ animationDelay: "400ms", animationFillMode: "forwards" }}>
             <TypewriterText 
-              text="Ethical Hacker | OSINT Investigator | Script Developer" 
+              text="Cybersecurity Analyst | Digital Forensics | OSINT Investigator" 
               speed={40}
               delay={800}
             />
           </div>
 
+          {/* Location and Contact */}
+          <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground animate-fade-in-up opacity-0" style={{ animationDelay: "500ms", animationFillMode: "forwards" }}>
+            <span className="flex items-center gap-1">
+              <MapPin className="w-4 h-4 text-neon-green" />
+              India
+            </span>
+            <span className="flex items-center gap-1">
+              <Mail className="w-4 h-4 text-electric-purple" />
+              nikhilkaware8236@gmail.com
+            </span>
+          </div>
+
           {/* Tagline from GitHub */}
-          <p className="text-lg text-muted-foreground/80 max-w-2xl mx-auto animate-fade-in-up opacity-0 font-mono" style={{ animationDelay: "500ms", animationFillMode: "forwards" }}>
+          <p className="text-lg text-muted-foreground/80 max-w-2xl mx-auto animate-fade-in-up opacity-0 font-mono" style={{ animationDelay: "550ms", animationFillMode: "forwards" }}>
             <span className="text-neon-green">👾</span> Breaking barriers to uncover hidden vulnerabilities
             <br />
             <span className="text-electric-purple">💻</span> Automating the art of hacking with powerful scripts
           </p>
 
           {/* Status badge */}
-          <div className="flex items-center justify-center gap-4 animate-fade-in-up opacity-0" style={{ animationDelay: "600ms", animationFillMode: "forwards" }}>
+          <div className="flex items-center justify-center gap-4 flex-wrap animate-fade-in-up opacity-0" style={{ animationDelay: "600ms", animationFillMode: "forwards" }}>
             <div className="status-online">
               <Shield className="w-4 h-4" />
               Open for Entry-Level Roles
@@ -87,14 +99,22 @@ const HeroSection = () => {
             </a>
           </div>
 
-          {/* CTA Button */}
-          <div className="pt-4 animate-fade-in-up opacity-0" style={{ animationDelay: "800ms", animationFillMode: "forwards" }}>
+          {/* CTA Buttons */}
+          <div className="pt-4 flex items-center justify-center gap-4 flex-wrap animate-fade-in-up opacity-0" style={{ animationDelay: "800ms", animationFillMode: "forwards" }}>
             <a
               href="mailto:nikhilkaware8236@gmail.com"
               className="terminal-btn group"
             >
               <span>Initialize_Connection()</span>
               <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </a>
+            <a
+              href="/Nikhil_Kaware_Resume.pdf"
+              download="Nikhil_Kaware_Resume.pdf"
+              className="inline-flex items-center gap-2 px-6 py-3 font-mono text-sm bg-electric-purple/10 border border-electric-purple/50 text-electric-purple rounded hover:bg-electric-purple/20 hover:border-electric-purple transition-all hover:shadow-[0_0_15px_hsl(270_100%_65%/0.3)]"
+            >
+              <Download className="w-4 h-4" />
+              <span>Download_Resume.pdf</span>
             </a>
           </div>
 
