@@ -1,95 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 0 0% 2%;
+    --foreground: 120 5% 90%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 0 0% 5%;
+    --card-foreground: 120 5% 90%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 5%;
+    --popover-foreground: 120 5% 90%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 120 100% 50%;
+    --primary-foreground: 0 0% 2%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 270 100% 65%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 15% 12%;
+    --muted-foreground: 220 10% 50%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 270 100% 65%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 85% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 120 50% 20%;
+    --input: 220 15% 15%;
+    --ring: 120 100% 50%;
 
     --radius: 0.5rem;
 
+    /* Custom cyberpunk colors */
+    --neon-green: 120 100% 50%;
+    --neon-green-glow: 0 0 20px hsl(120 100% 50% / 0.5), 0 0 40px hsl(120 100% 50% / 0.3);
+    --electric-purple: 270 100% 65%;
+    --electric-purple-glow: 0 0 20px hsl(270 100% 65% / 0.5), 0 0 40px hsl(270 100% 65% / 0.3);
+    --signal-red: 0 85% 55%;
+    --signal-red-glow: 0 0 20px hsl(0 85% 55% / 0.5), 0 0 40px hsl(0 85% 55% / 0.3);
+    --terminal-bg: 0 0% 3%;
+    --terminal-border: 120 50% 25%;
+
+    /* Fonts */
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Inter', sans-serif;
+
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
@@ -99,7 +66,325 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground;
+  html {
+    scroll-behavior: smooth;
   }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-mono);
+  }
+
+  code, pre {
+    font-family: var(--font-mono);
+  }
+}
+
+@layer components {
+  /* Glitch effect */
+  .glitch {
+    position: relative;
+    animation: glitch-skew 4s infinite linear alternate-reverse;
+  }
+
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 hsl(var(--signal-red));
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+  }
+
+  .glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 hsl(var(--electric-purple)), 2px 2px hsl(var(--neon-green));
+    animation: glitch-anim2 3s infinite linear alternate-reverse;
+  }
+
+  /* Terminal card style */
+  .terminal-card {
+    @apply relative overflow-hidden rounded-lg;
+    background: hsl(var(--terminal-bg));
+    border: 1px solid hsl(var(--terminal-border) / 0.5);
+    box-shadow: inset 0 1px 0 hsl(var(--neon-green) / 0.1);
+  }
+
+  .terminal-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 32px;
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--neon-green) / 0.05),
+      transparent
+    );
+    border-bottom: 1px solid hsl(var(--terminal-border) / 0.3);
+  }
+
+  .terminal-card:hover {
+    border-color: hsl(var(--neon-green) / 0.8);
+    box-shadow: var(--neon-green-glow), inset 0 1px 0 hsl(var(--neon-green) / 0.2);
+  }
+
+  /* Neon glow effects */
+  .neon-glow-green {
+    box-shadow: var(--neon-green-glow);
+  }
+
+  .neon-glow-purple {
+    box-shadow: var(--electric-purple-glow);
+  }
+
+  .neon-glow-red {
+    box-shadow: var(--signal-red-glow);
+  }
+
+  .text-glow-green {
+    text-shadow: 0 0 10px hsl(var(--neon-green) / 0.8), 0 0 20px hsl(var(--neon-green) / 0.5);
+  }
+
+  .text-glow-purple {
+    text-shadow: 0 0 10px hsl(var(--electric-purple) / 0.8), 0 0 20px hsl(var(--electric-purple) / 0.5);
+  }
+
+  /* Scanline effect */
+  .scanlines {
+    position: relative;
+  }
+
+  .scanlines::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      hsl(0 0% 0% / 0.03) 2px,
+      hsl(0 0% 0% / 0.03) 4px
+    );
+    pointer-events: none;
+  }
+
+  /* Typing cursor */
+  .typing-cursor::after {
+    content: '|';
+    animation: blink 1s step-end infinite;
+    color: hsl(var(--neon-green));
+  }
+
+  /* Skill bar */
+  .skill-bar {
+    @apply relative h-2 rounded-full overflow-hidden;
+    background: hsl(var(--muted));
+  }
+
+  .skill-bar-fill {
+    @apply h-full rounded-full;
+    background: linear-gradient(90deg, hsl(var(--neon-green)), hsl(var(--electric-purple)));
+    box-shadow: 0 0 10px hsl(var(--neon-green) / 0.5);
+  }
+
+  /* Status badge */
+  .status-online {
+    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-mono;
+    background: hsl(var(--neon-green) / 0.1);
+    border: 1px solid hsl(var(--neon-green) / 0.5);
+    color: hsl(var(--neon-green));
+  }
+
+  .status-online::before {
+    content: '';
+    @apply w-2 h-2 rounded-full;
+    background: hsl(var(--neon-green));
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* Terminal button */
+  .terminal-btn {
+    @apply relative inline-flex items-center gap-2 px-6 py-3 font-mono text-sm transition-all duration-300;
+    background: hsl(var(--terminal-bg));
+    border: 1px solid hsl(var(--neon-green) / 0.5);
+    color: hsl(var(--neon-green));
+  }
+
+  .terminal-btn::before {
+    content: '>';
+    @apply text-neon-green;
+  }
+
+  .terminal-btn:hover {
+    background: hsl(var(--neon-green) / 0.1);
+    border-color: hsl(var(--neon-green));
+    box-shadow: var(--neon-green-glow);
+  }
+
+  /* Grid pattern background */
+  .grid-bg {
+    background-image: 
+      linear-gradient(hsl(var(--neon-green) / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--neon-green) / 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+}
+
+@layer utilities {
+  /* Animation utilities */
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out forwards;
+  }
+
+  .animate-typing {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid hsl(var(--neon-green));
+    animation: typing 3s steps(50, end), blink 0.75s step-end infinite;
+  }
+
+  /* Staggered animation delays */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+  .delay-600 { animation-delay: 600ms; }
+}
+
+/* Keyframes */
+@keyframes glitch-anim {
+  0% { clip: rect(31px, 9999px, 94px, 0); transform: skew(0.85deg); }
+  5% { clip: rect(70px, 9999px, 71px, 0); transform: skew(0.34deg); }
+  10% { clip: rect(92px, 9999px, 68px, 0); transform: skew(0.35deg); }
+  15% { clip: rect(43px, 9999px, 21px, 0); transform: skew(0.15deg); }
+  20% { clip: rect(20px, 9999px, 61px, 0); transform: skew(0.94deg); }
+  25% { clip: rect(63px, 9999px, 51px, 0); transform: skew(0.29deg); }
+  30% { clip: rect(54px, 9999px, 16px, 0); transform: skew(0.26deg); }
+  35% { clip: rect(83px, 9999px, 90px, 0); transform: skew(0.89deg); }
+  40% { clip: rect(32px, 9999px, 54px, 0); transform: skew(0.35deg); }
+  45% { clip: rect(67px, 9999px, 73px, 0); transform: skew(0.12deg); }
+  50% { clip: rect(12px, 9999px, 38px, 0); transform: skew(0.67deg); }
+  55% { clip: rect(45px, 9999px, 87px, 0); transform: skew(0.23deg); }
+  60% { clip: rect(78px, 9999px, 23px, 0); transform: skew(0.45deg); }
+  65% { clip: rect(34px, 9999px, 67px, 0); transform: skew(0.78deg); }
+  70% { clip: rect(89px, 9999px, 45px, 0); transform: skew(0.12deg); }
+  75% { clip: rect(23px, 9999px, 78px, 0); transform: skew(0.56deg); }
+  80% { clip: rect(56px, 9999px, 34px, 0); transform: skew(0.34deg); }
+  85% { clip: rect(67px, 9999px, 89px, 0); transform: skew(0.67deg); }
+  90% { clip: rect(45px, 9999px, 56px, 0); transform: skew(0.23deg); }
+  95% { clip: rect(78px, 9999px, 12px, 0); transform: skew(0.89deg); }
+  100% { clip: rect(34px, 9999px, 90px, 0); transform: skew(0.45deg); }
+}
+
+@keyframes glitch-anim2 {
+  0% { clip: rect(65px, 9999px, 99px, 0); transform: skew(0.95deg); }
+  5% { clip: rect(49px, 9999px, 62px, 0); transform: skew(0.12deg); }
+  10% { clip: rect(74px, 9999px, 37px, 0); transform: skew(0.56deg); }
+  15% { clip: rect(27px, 9999px, 84px, 0); transform: skew(0.78deg); }
+  20% { clip: rect(91px, 9999px, 18px, 0); transform: skew(0.34deg); }
+  25% { clip: rect(42px, 9999px, 76px, 0); transform: skew(0.67deg); }
+  30% { clip: rect(58px, 9999px, 43px, 0); transform: skew(0.23deg); }
+  35% { clip: rect(83px, 9999px, 29px, 0); transform: skew(0.89deg); }
+  40% { clip: rect(16px, 9999px, 95px, 0); transform: skew(0.45deg); }
+  45% { clip: rect(71px, 9999px, 52px, 0); transform: skew(0.12deg); }
+  50% { clip: rect(38px, 9999px, 81px, 0); transform: skew(0.56deg); }
+  55% { clip: rect(94px, 9999px, 24px, 0); transform: skew(0.78deg); }
+  60% { clip: rect(47px, 9999px, 68px, 0); transform: skew(0.34deg); }
+  65% { clip: rect(73px, 9999px, 35px, 0); transform: skew(0.67deg); }
+  70% { clip: rect(29px, 9999px, 88px, 0); transform: skew(0.23deg); }
+  75% { clip: rect(86px, 9999px, 41px, 0); transform: skew(0.89deg); }
+  80% { clip: rect(52px, 9999px, 79px, 0); transform: skew(0.45deg); }
+  85% { clip: rect(18px, 9999px, 63px, 0); transform: skew(0.12deg); }
+  90% { clip: rect(67px, 9999px, 26px, 0); transform: skew(0.56deg); }
+  95% { clip: rect(34px, 9999px, 92px, 0); transform: skew(0.78deg); }
+  100% { clip: rect(81px, 9999px, 47px, 0); transform: skew(0.34deg); }
+}
+
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); }
+  20% { transform: skew(0deg); }
+  21% { transform: skew(2deg); }
+  22% { transform: skew(0deg); }
+  40% { transform: skew(0deg); }
+  41% { transform: skew(-1deg); }
+  42% { transform: skew(0deg); }
+  60% { transform: skew(0deg); }
+  80% { transform: skew(0deg); }
+  81% { transform: skew(3deg); }
+  82% { transform: skew(0deg); }
+  100% { transform: skew(0deg); }
+}
+
+@keyframes blink {
+  0%, 100% { border-color: transparent; }
+  50% { border-color: hsl(var(--neon-green)); }
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 5px hsl(var(--neon-green));
+  }
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 15px hsl(var(--neon-green));
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--neon-green) / 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--neon-green) / 0.5);
+}
+
+/* Selection styling */
+::selection {
+  background: hsl(var(--neon-green) / 0.3);
+  color: hsl(var(--neon-green));
 }
