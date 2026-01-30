@@ -1,4 +1,4 @@
-import { Folder, ExternalLink, Code, Shield, Eye, Network, Search, Key, Users } from "lucide-react";
+import { Folder, ExternalLink, Code, Shield, Eye, Network, Search, Key, Users, Globe, Skull, FileSearch, Link } from "lucide-react";
 import TerminalCard from "../TerminalCard";
 
 const projects = [
@@ -9,54 +9,68 @@ const projects = [
     icon: Code,
     variant: "default" as const,
     color: "text-neon-green",
+    stars: 3,
+    repo: "https://github.com/Nikhilkaware36/PyPop",
   },
   {
-    name: "DefenderBot",
-    description: "Blue Team Assistant",
+    name: "DomineGhost",
+    description: "Domain & DNS Security Scanner with WHOIS, NMAP, phishing & vulnerability testing",
     tech: "Python",
-    icon: Shield,
-    variant: "default" as const,
-    color: "text-neon-green",
-  },
-  {
-    name: "ShadowLens",
-    description: "OSINT Analyzer",
-    tech: "Python",
-    icon: Eye,
+    icon: Globe,
     variant: "purple" as const,
     color: "text-electric-purple",
+    stars: 1,
+    repo: "https://github.com/Nikhilkaware36/DomineGhost",
   },
   {
-    name: "NetEye",
-    description: "Network Monitor",
-    tech: "Python",
-    icon: Network,
-    variant: "default" as const,
-    color: "text-neon-green",
-  },
-  {
-    name: "TraceX",
-    description: "Forensics Helper",
+    name: "CipherSherlock",
+    description: "Cryptographic Analysis & Security Tool",
     tech: "Python",
     icon: Search,
-    variant: "purple" as const,
-    color: "text-electric-purple",
-  },
-  {
-    name: "RajaBabu",
-    description: "Password Breaker",
-    tech: "Python",
-    icon: Key,
-    variant: "red" as const,
-    color: "text-signal-red",
-  },
-  {
-    name: "SafeNet Guard",
-    description: "Public Cyber Safety Tool",
-    tech: "Python",
-    icon: Users,
     variant: "default" as const,
     color: "text-neon-green",
+    stars: 0,
+    repo: "https://github.com/Nikhilkaware36/CipherSherlock",
+  },
+  {
+    name: "Shadowsender",
+    description: "Anonymous mail tool for cybersecurity awareness & red team simulations",
+    tech: "Python",
+    icon: Skull,
+    variant: "red" as const,
+    color: "text-signal-red",
+    stars: 1,
+    repo: "https://github.com/Nikhilkaware36/Shadowsender",
+  },
+  {
+    name: "File-BLACKRAT",
+    description: "Secure file transfer tool for ethical hackers & cybersecurity professionals",
+    tech: "Python",
+    icon: FileSearch,
+    variant: "red" as const,
+    color: "text-signal-red",
+    stars: 0,
+    repo: "https://github.com/Nikhilkaware36/File-BLACKRAT",
+  },
+  {
+    name: "Linklens",
+    description: "URL Analysis & Security Scanner",
+    tech: "TypeScript",
+    icon: Link,
+    variant: "purple" as const,
+    color: "text-electric-purple",
+    stars: 0,
+    repo: "https://github.com/Nikhilkaware36/Linklens",
+  },
+  {
+    name: "TruthScan Pro",
+    description: "Advanced Verification & Analysis Tool",
+    tech: "TypeScript",
+    icon: Eye,
+    variant: "default" as const,
+    color: "text-neon-green",
+    stars: 0,
+    repo: "https://github.com/Nikhilkaware36/truthscan-pro",
   },
 ];
 
@@ -76,37 +90,67 @@ const ProjectsSection = () => {
           {/* Projects grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, index) => (
-              <TerminalCard
+              <a
                 key={project.name}
-                title={`${project.name.toLowerCase()}.py`}
-                variant={project.variant}
-                className="opacity-0 animate-fade-in-up"
-                style={{ animationDelay: `${index * 100}ms`, animationFillMode: "forwards" } as React.CSSProperties}
+                href={project.repo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block group"
               >
-                <div className="space-y-4">
-                  <div className="flex items-start justify-between">
-                    <project.icon className={`w-10 h-10 ${project.color}`} />
-                    <span className="text-xs font-mono px-2 py-1 bg-muted rounded text-muted-foreground">
-                      {project.tech}
-                    </span>
-                  </div>
-                  
-                  <div>
-                    <h3 className={`font-mono font-bold text-xl ${project.color}`}>
-                      {project.name}
-                    </h3>
-                    <p className="text-muted-foreground text-sm mt-1">
-                      {project.description}
-                    </p>
-                  </div>
+                <TerminalCard
+                  title={`${project.name.toLowerCase().replace(/\s+/g, '-')}.py`}
+                  variant={project.variant}
+                  className="h-full opacity-0 animate-fade-in-up"
+                  style={{ animationDelay: `${index * 100}ms`, animationFillMode: "forwards" } as React.CSSProperties}
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-start justify-between">
+                      <project.icon className={`w-10 h-10 ${project.color} transition-transform group-hover:scale-110`} />
+                      <div className="flex items-center gap-2">
+                        {project.stars > 0 && (
+                          <span className="text-xs font-mono px-2 py-1 bg-muted rounded text-yellow-500 flex items-center gap-1">
+                            ⭐ {project.stars}
+                          </span>
+                        )}
+                        <span className="text-xs font-mono px-2 py-1 bg-muted rounded text-muted-foreground">
+                          {project.tech}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h3 className={`font-mono font-bold text-xl ${project.color} group-hover:text-glow-green transition-all`}>
+                        {project.name}
+                      </h3>
+                      <p className="text-muted-foreground text-sm mt-1 line-clamp-2">
+                        {project.description}
+                      </p>
+                    </div>
 
-                  <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground pt-2 border-t border-border/30">
-                    <span className={project.color}>●</span>
-                    <span>Ready to deploy</span>
+                    <div className="flex items-center justify-between text-xs font-mono text-muted-foreground pt-2 border-t border-border/30">
+                      <div className="flex items-center gap-2">
+                        <span className={project.color}>●</span>
+                        <span>View on GitHub</span>
+                      </div>
+                      <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
                   </div>
-                </div>
-              </TerminalCard>
+                </TerminalCard>
+              </a>
             ))}
+          </div>
+
+          {/* View all repos link */}
+          <div className="mt-8 text-center">
+            <a
+              href="https://github.com/Nikhilkaware36?tab=repositories"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-neon-green transition-colors"
+            >
+              <span>{">"} View all repositories</span>
+              <ExternalLink className="w-4 h-4" />
+            </a>
           </div>
         </div>
       </div>
