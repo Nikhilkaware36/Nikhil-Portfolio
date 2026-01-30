@@ -1,6 +1,6 @@
 import GlitchText from "../GlitchText";
 import TypewriterText from "../TypewriterText";
-import { Terminal, Shield, ChevronRight } from "lucide-react";
+import { Terminal, Shield, ChevronRight, Github, Linkedin, Instagram } from "lucide-react";
 
 const HeroSection = () => {
   return (
@@ -32,22 +32,63 @@ const HeroSection = () => {
           {/* Typewriter subtitle */}
           <div className="text-xl md:text-2xl text-muted-foreground animate-fade-in-up opacity-0" style={{ animationDelay: "400ms", animationFillMode: "forwards" }}>
             <TypewriterText 
-              text="Cybersecurity Analyst | Digital Forensics | OSINT Investigator" 
+              text="Ethical Hacker | OSINT Investigator | Script Developer" 
               speed={40}
               delay={800}
             />
           </div>
 
+          {/* Tagline from GitHub */}
+          <p className="text-lg text-muted-foreground/80 max-w-2xl mx-auto animate-fade-in-up opacity-0 font-mono" style={{ animationDelay: "500ms", animationFillMode: "forwards" }}>
+            <span className="text-neon-green">👾</span> Breaking barriers to uncover hidden vulnerabilities
+            <br />
+            <span className="text-electric-purple">💻</span> Automating the art of hacking with powerful scripts
+          </p>
+
           {/* Status badge */}
-          <div className="animate-fade-in-up opacity-0" style={{ animationDelay: "600ms", animationFillMode: "forwards" }}>
+          <div className="flex items-center justify-center gap-4 animate-fade-in-up opacity-0" style={{ animationDelay: "600ms", animationFillMode: "forwards" }}>
             <div className="status-online">
               <Shield className="w-4 h-4" />
               Open for Entry-Level Roles
             </div>
+            <span className="px-3 py-1 text-xs font-mono bg-electric-purple/10 border border-electric-purple/50 rounded-full text-electric-purple">
+              Asura Legion
+            </span>
+          </div>
+
+          {/* Social links */}
+          <div className="flex items-center justify-center gap-4 animate-fade-in-up opacity-0" style={{ animationDelay: "700ms", animationFillMode: "forwards" }}>
+            <a
+              href="https://github.com/Nikhilkaware36"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-3 bg-card border border-border/50 rounded-lg text-muted-foreground hover:text-neon-green hover:border-neon-green/50 transition-all hover:shadow-[0_0_15px_hsl(120_100%_50%/0.2)]"
+              aria-label="GitHub"
+            >
+              <Github className="w-5 h-5" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/nikhil-kaware-0709482b5"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-3 bg-card border border-border/50 rounded-lg text-muted-foreground hover:text-electric-purple hover:border-electric-purple/50 transition-all hover:shadow-[0_0_15px_hsl(270_100%_65%/0.2)]"
+              aria-label="LinkedIn"
+            >
+              <Linkedin className="w-5 h-5" />
+            </a>
+            <a
+              href="https://www.instagram.com/nikhil.kaware.3/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-3 bg-card border border-border/50 rounded-lg text-muted-foreground hover:text-signal-red hover:border-signal-red/50 transition-all hover:shadow-[0_0_15px_hsl(0_85%_55%/0.2)]"
+              aria-label="Instagram"
+            >
+              <Instagram className="w-5 h-5" />
+            </a>
           </div>
 
           {/* CTA Button */}
-          <div className="pt-8 animate-fade-in-up opacity-0" style={{ animationDelay: "800ms", animationFillMode: "forwards" }}>
+          <div className="pt-4 animate-fade-in-up opacity-0" style={{ animationDelay: "800ms", animationFillMode: "forwards" }}>
             <a
               href="mailto:nikhilkaware8236@gmail.com"
               className="terminal-btn group"
@@ -58,7 +99,7 @@ const HeroSection = () => {
           </div>
 
           {/* Scroll indicator */}
-          <div className="pt-16 animate-fade-in-up opacity-0" style={{ animationDelay: "1000ms", animationFillMode: "forwards" }}>
+          <div className="pt-12 animate-fade-in-up opacity-0" style={{ animationDelay: "1000ms", animationFillMode: "forwards" }}>
             <div className="flex flex-col items-center gap-2 text-muted-foreground">
               <span className="text-xs font-mono">scroll_down</span>
               <div className="w-5 h-8 border border-muted-foreground/30 rounded-full flex justify-center pt-2">
