@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import GlitchText from "../GlitchText";
 import TypewriterText from "../TypewriterText";
-import { Terminal, Shield, ChevronRight, Github, Linkedin, Instagram, Download, MapPin, Mail, Zap, Skull, Binary } from "lucide-react";
+import { Terminal, Shield, ChevronRight, Github, Linkedin, Instagram, Download, MapPin, Mail, Zap, Binary } from "lucide-react";
 import { useSound } from "@/hooks/useSound";
 import { useEffect, useState } from "react";
 
@@ -169,32 +169,6 @@ done`}
         style={{ opacity, scale }}
       >
         <div className="max-w-5xl mx-auto text-center space-y-8">
-          {/* Cyber badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, type: "spring" }}
-            className="flex justify-center mb-4"
-          >
-            <motion.div
-              className="relative"
-              animate={{ 
-                boxShadow: [
-                  "0 0 20px hsl(120 100% 50% / 0.2)",
-                  "0 0 40px hsl(120 100% 50% / 0.4)",
-                  "0 0 20px hsl(120 100% 50% / 0.2)"
-                ]
-              }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              style={{ borderRadius: "9999px" }}
-            >
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-neon-green/20 via-electric-purple/20 to-signal-red/20 flex items-center justify-center border border-neon-green/30">
-                <Skull className="w-10 h-10 text-neon-green" />
-              </div>
-              <div className="absolute inset-0 rounded-full border-2 border-dashed border-electric-purple/30" />
-            </motion.div>
-          </motion.div>
-
           {/* Terminal prompt - enhanced */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
