@@ -9,7 +9,6 @@ import CertificationsSection from "../components/sections/CertificationsSection"
 import AsuraLegionSection from "../components/sections/AsuraLegionSection";
 import HobbiesSection from "../components/sections/HobbiesSection";
 import FooterSection from "../components/sections/FooterSection";
-import CustomCursor from "../components/CustomCursor";
 import Background3D from "../components/Background3D";
 import IntroAnimation from "../components/IntroAnimation";
 import TerminalPopup from "../components/TerminalPopup";
@@ -25,9 +24,8 @@ const Index = () => {
         )}
       </AnimatePresence>
 
-      <div className={`min-h-screen bg-background text-foreground cursor-none ${showIntro ? "hidden" : ""}`}>
+      <div className={`min-h-screen bg-background text-foreground ${showIntro ? "hidden" : ""}`}>
         <Background3D />
-        <CustomCursor />
         <TerminalPopup />
         <Navigation />
         <main>
