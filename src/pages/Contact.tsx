@@ -11,7 +11,7 @@ import { useSound } from "@/hooks/useSound";
 
 const socialLinks = [
   { name: "GitHub", icon: Github, url: "https://github.com/nikhilkaware36", handle: "@nikhilkaware36" },
-  { name: "LinkedIn", icon: Linkedin, url: "https://linkedin.com/in/", handle: "Nikhil Kaware" },
+  { name: "LinkedIn", icon: Linkedin, url: "https://www.linkedin.com/in/nikhil-kaware-0709482b5", handle: "Nikhil Kaware" },
   { name: "Instagram", icon: Instagram, url: "https://instagram.com/nikhil.kaware.3", handle: "@nikhil.kaware.3" },
 ];
 
