@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Trail {
@@ -8,46 +8,47 @@ interface Trail {
 }
 
 const CustomCursor = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({ x: -100, y: -100 });
   const [isPointer, setIsPointer] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [trails, setTrails] = useState<Trail[]>([]);
   const [velocity, setVelocity] = useState({ x: 0, y: 0 });
   const lastPosition = useRef({ x: 0, y: 0 });
-  const trailId = useRef(0);
+  const trailIdRef = useRef(0);
+  const rafRef = useRef<number>();
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    const newX = e.clientX;
+    const newY = e.clientY;
+    
+    // Calculate velocity
+    const vx = newX - lastPosition.current.x;
+    const vy = newY - lastPosition.current.y;
+    setVelocity({ x: vx, y: vy });
+    lastPosition.current = { x: newX, y: newY };
+    
+    setPosition({ x: newX, y: newY });
+    setIsVisible(true);
+    
+    // Add trail with unique ID
+    trailIdRef.current += 1;
+    const newTrail = { x: newX, y: newY, id: trailIdRef.current };
+    setTrails(prev => [...prev.slice(-10), newTrail]);
+    
+    const target = e.target as HTMLElement;
+    const isClickable = 
+      target.tagName === "A" ||
+      target.tagName === "BUTTON" ||
+      target.tagName === "INPUT" ||
+      target.closest("a") !== null ||
+      target.closest("button") !== null ||
+      window.getComputedStyle(target).cursor === "pointer";
+    
+    setIsPointer(isClickable);
+  }, []);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const newX = e.clientX;
-      const newY = e.clientY;
-      
-      // Calculate velocity for effects
-      setVelocity({
-        x: newX - lastPosition.current.x,
-        y: newY - lastPosition.current.y,
-      });
-      lastPosition.current = { x: newX, y: newY };
-      
-      setPosition({ x: newX, y: newY });
-      setIsVisible(true);
-      
-      // Add trail particle
-      trailId.current += 1;
-      setTrails(prev => [...prev.slice(-12), { x: newX, y: newY, id: trailId.current }]);
-      
-      const target = e.target as HTMLElement;
-      const isClickable = 
-        target.tagName === "A" ||
-        target.tagName === "BUTTON" ||
-        target.tagName === "INPUT" ||
-        !!target.closest("a") ||
-        !!target.closest("button") ||
-        window.getComputedStyle(target).cursor === "pointer";
-      
-      setIsPointer(isClickable);
-    };
-
     const handleMouseDown = () => setIsClicking(true);
     const handleMouseUp = () => setIsClicking(false);
     const handleMouseLeave = () => setIsVisible(false);
@@ -65,14 +66,15 @@ const CustomCursor = () => {
       document.removeEventListener("mouseup", handleMouseUp);
       document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
       document.documentElement.removeEventListener("mouseenter", handleMouseEnter);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [handleMouseMove]);
 
-  // Clean up old trails
+  // Clean up old trails periodically
   useEffect(() => {
     const interval = setInterval(() => {
-      setTrails(prev => prev.slice(-8));
-    }, 100);
+      setTrails(prev => prev.slice(-6));
+    }, 80);
     return () => clearInterval(interval);
   }, []);
 
@@ -85,17 +87,17 @@ const CustomCursor = () => {
   const rotation = Math.atan2(velocity.y, velocity.x) * (180 / Math.PI);
 
   return (
-    <>
-      {/* Trail particles */}
-      <AnimatePresence>
+    <div className="pointer-events-none fixed inset-0 z-[99999] overflow-hidden">
+      {/* Trail particles with unique keys */}
+      <AnimatePresence mode="popLayout">
         {trails.map((trail, index) => (
           <motion.div
-            key={trail.id}
-            initial={{ opacity: 0.6, scale: 1 }}
+            key={`trail-${trail.id}`}
+            initial={{ opacity: 0.5, scale: 0.8 }}
             animate={{ opacity: 0, scale: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="fixed pointer-events-none z-[9996]"
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="absolute"
             style={{
               left: trail.x,
               top: trail.y,
@@ -105,130 +107,124 @@ const CustomCursor = () => {
             <div
               className="rounded-full"
               style={{
-                width: 4 + index * 0.3,
-                height: 4 + index * 0.3,
+                width: 3 + index * 0.4,
+                height: 3 + index * 0.4,
                 background: isPointer 
-                  ? `hsl(270 100% ${50 + index * 3}% / ${0.3 + index * 0.02})`
-                  : `hsl(120 100% ${50 + index * 3}% / ${0.3 + index * 0.02})`,
+                  ? `hsl(270 100% ${55 + index * 2}%)`
+                  : `hsl(120 100% ${55 + index * 2}%)`,
                 boxShadow: isPointer
-                  ? `0 0 ${6 + index}px hsl(270 100% 65% / 0.4)`
-                  : `0 0 ${6 + index}px hsl(120 100% 50% / 0.4)`,
+                  ? `0 0 ${4 + index}px hsl(270 100% 65% / 0.5)`
+                  : `0 0 ${4 + index}px hsl(120 100% 50% / 0.5)`,
               }}
             />
           </motion.div>
         ))}
       </AnimatePresence>
 
-      {/* Outer glow ring - follows slower */}
+      {/* Outer glow ring - spring physics */}
       <motion.div
-        className={`fixed pointer-events-none z-[9997] ${isVisible ? "opacity-100" : "opacity-0"}`}
+        className={`absolute transition-opacity duration-100 ${isVisible ? "opacity-100" : "opacity-0"}`}
         animate={{
-          left: position.x,
-          top: position.y,
-          scale: isPointer ? 1.8 : isClicking ? 0.8 : 1,
+          x: position.x - 22,
+          y: position.y - 22,
+          scale: isPointer ? 1.6 : isClicking ? 0.7 : 1,
         }}
-        transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.5 }}
-        style={{ transform: "translate(-50%, -50%)" }}
+        transition={{ type: "spring", stiffness: 120, damping: 12, mass: 0.4 }}
       >
         <div
-          className={`rounded-full border-2 transition-colors duration-200 ${
-            isPointer ? "border-electric-purple" : "border-neon-green/40"
+          className={`w-11 h-11 rounded-full border-2 transition-colors duration-150 ${
+            isPointer ? "border-electric-purple" : "border-neon-green/50"
           }`}
           style={{
-            width: 40,
-            height: 40,
             boxShadow: isPointer 
-              ? "0 0 20px hsl(270 100% 65% / 0.4), inset 0 0 20px hsl(270 100% 65% / 0.1)" 
-              : "0 0 15px hsl(120 100% 50% / 0.3), inset 0 0 15px hsl(120 100% 50% / 0.05)",
+              ? "0 0 25px hsl(270 100% 65% / 0.5), inset 0 0 15px hsl(270 100% 65% / 0.1)" 
+              : "0 0 20px hsl(120 100% 50% / 0.4), inset 0 0 10px hsl(120 100% 50% / 0.05)",
           }}
         />
       </motion.div>
 
-      {/* Inner ring - follows medium speed */}
+      {/* Inner geometric ring */}
       <motion.div
-        className={`fixed pointer-events-none z-[9998] ${isVisible ? "opacity-100" : "opacity-0"}`}
+        className={`absolute transition-opacity duration-100 ${isVisible ? "opacity-100" : "opacity-0"}`}
         animate={{
-          left: position.x,
-          top: position.y,
-          scale: isClicking ? 0.6 : 1,
-          rotate: isPointer ? rotation : 0,
+          x: position.x - 12,
+          y: position.y - 12,
+          scale: isClicking ? 0.5 : 1,
+          rotate: isPointer ? 45 : 0,
         }}
-        transition={{ type: "spring", stiffness: 300, damping: 20, mass: 0.3 }}
-        style={{ transform: "translate(-50%, -50%)" }}
+        transition={{ type: "spring", stiffness: 200, damping: 15, mass: 0.2 }}
       >
         <div
-          className={`transition-all duration-150 ${
-            isPointer ? "rotate-45" : ""
+          className={`w-6 h-6 transition-all duration-100 ${
+            isPointer ? "rounded-sm" : "rounded-full"
           }`}
           style={{
-            width: isPointer ? 20 : 24,
-            height: isPointer ? 20 : 24,
-            borderRadius: isPointer ? "4px" : "50%",
-            border: `1px solid ${isPointer ? "hsl(270 100% 65% / 0.8)" : "hsl(120 100% 50% / 0.6)"}`,
+            border: `1.5px solid ${isPointer ? "hsl(270 100% 65%)" : "hsl(120 100% 50% / 0.7)"}`,
             boxShadow: isPointer
-              ? "0 0 10px hsl(270 100% 65% / 0.5)"
-              : "0 0 8px hsl(120 100% 50% / 0.4)",
+              ? "0 0 12px hsl(270 100% 65% / 0.6)"
+              : "0 0 10px hsl(120 100% 50% / 0.5)",
           }}
         />
       </motion.div>
 
-      {/* Core cursor - instant follow */}
+      {/* Core dot - instant follow */}
       <div
-        className={`fixed pointer-events-none z-[9999] transition-opacity duration-100 ${
-          isVisible ? "opacity-100" : "opacity-0"
-        }`}
+        className={`absolute transition-opacity duration-50 ${isVisible ? "opacity-100" : "opacity-0"}`}
         style={{
           left: position.x,
           top: position.y,
-          transform: `translate(-50%, -50%) scale(${isClicking ? 0.5 : 1})`,
+          transform: `translate(-50%, -50%) scale(${isClicking ? 0.4 : 1})`,
+          transition: "transform 0.05s ease-out",
         }}
       >
-        {/* Main dot with crosshair effect */}
         <div className="relative">
+          {/* Main glowing dot */}
           <div
-            className={`rounded-full transition-all duration-100 ${
-              isPointer ? "bg-electric-purple" : "bg-neon-green"
+            className={`rounded-full transition-all duration-75 ${
+              isPointer ? "bg-electric-purple w-2 h-2" : "bg-neon-green w-1.5 h-1.5"
             }`}
             style={{
-              width: isPointer ? 8 : 6,
-              height: isPointer ? 8 : 6,
               boxShadow: isPointer
-                ? "0 0 15px hsl(270 100% 65%), 0 0 30px hsl(270 100% 65% / 0.5)"
-                : "0 0 12px hsl(120 100% 50%), 0 0 25px hsl(120 100% 50% / 0.5)",
+                ? "0 0 20px hsl(270 100% 65%), 0 0 40px hsl(270 100% 65% / 0.6), 0 0 60px hsl(270 100% 65% / 0.3)"
+                : "0 0 15px hsl(120 100% 50%), 0 0 30px hsl(120 100% 50% / 0.5), 0 0 45px hsl(120 100% 50% / 0.2)",
             }}
           />
           
-          {/* Crosshair lines when hovering */}
-          {isPointer && (
-            <>
-              <motion.div
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-[1px] bg-electric-purple/60"
-              />
-              <motion.div
-                initial={{ scaleY: 0 }}
-                animate={{ scaleY: 1 }}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1px] h-6 bg-electric-purple/60"
-              />
-            </>
-          )}
+          {/* Crosshair on hover */}
+          <AnimatePresence>
+            {isPointer && (
+              <>
+                <motion.div
+                  initial={{ scaleX: 0, opacity: 0 }}
+                  animate={{ scaleX: 1, opacity: 1 }}
+                  exit={{ scaleX: 0, opacity: 0 }}
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-px bg-gradient-to-r from-transparent via-electric-purple to-transparent"
+                />
+                <motion.div
+                  initial={{ scaleY: 0, opacity: 0 }}
+                  animate={{ scaleY: 1, opacity: 1 }}
+                  exit={{ scaleY: 0, opacity: 0 }}
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-px h-8 bg-gradient-to-b from-transparent via-electric-purple to-transparent"
+                />
+              </>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
-      {/* Click burst effect */}
+      {/* Click burst ripple */}
       <AnimatePresence>
         {isClicking && (
           <motion.div
-            initial={{ scale: 0.5, opacity: 1 }}
-            animate={{ scale: 2, opacity: 0 }}
+            key="click-burst"
+            initial={{ scale: 0.3, opacity: 1 }}
+            animate={{ scale: 2.5, opacity: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="fixed pointer-events-none z-[9995]"
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="absolute"
             style={{
-              left: position.x,
-              top: position.y,
-              transform: "translate(-50%, -50%)",
+              left: position.x - 24,
+              top: position.y - 24,
             }}
           >
             <div
@@ -236,35 +232,73 @@ const CustomCursor = () => {
               style={{
                 borderColor: isPointer ? "hsl(270 100% 65%)" : "hsl(120 100% 50%)",
                 boxShadow: isPointer
-                  ? "0 0 30px hsl(270 100% 65% / 0.6)"
-                  : "0 0 30px hsl(120 100% 50% / 0.6)",
+                  ? "0 0 40px hsl(270 100% 65% / 0.7)"
+                  : "0 0 40px hsl(120 100% 50% / 0.7)",
               }}
             />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Velocity-based stretch effect */}
-      {speed > 10 && (
-        <motion.div
-          className="fixed pointer-events-none z-[9994]"
+      {/* Motion blur trail on fast movement */}
+      {speed > 15 && (
+        <div
+          className="absolute"
           style={{
-            left: position.x - velocity.x * 0.5,
-            top: position.y - velocity.y * 0.5,
+            left: position.x - velocity.x * 0.4,
+            top: position.y - velocity.y * 0.4,
             transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
           }}
         >
           <div
             className="rounded-full"
             style={{
-              width: Math.min(speed * 0.5, 30),
-              height: 2,
-              background: `linear-gradient(90deg, transparent, ${isPointer ? "hsl(270 100% 65% / 0.6)" : "hsl(120 100% 50% / 0.6)"})`,
+              width: Math.min(speed * 0.6, 40),
+              height: 3,
+              background: `linear-gradient(90deg, transparent, ${isPointer ? "hsl(270 100% 65% / 0.7)" : "hsl(120 100% 50% / 0.7)"})`,
+              boxShadow: isPointer
+                ? "0 0 10px hsl(270 100% 65% / 0.5)"
+                : "0 0 10px hsl(120 100% 50% / 0.5)",
             }}
           />
-        </motion.div>
+        </div>
       )}
-    </>
+
+      {/* Particle burst on click */}
+      <AnimatePresence>
+        {isClicking && (
+          <>
+            {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
+              <motion.div
+                key={`particle-${angle}`}
+                initial={{ 
+                  x: position.x, 
+                  y: position.y, 
+                  scale: 1, 
+                  opacity: 1 
+                }}
+                animate={{ 
+                  x: position.x + Math.cos(angle * Math.PI / 180) * 30,
+                  y: position.y + Math.sin(angle * Math.PI / 180) * 30,
+                  scale: 0,
+                  opacity: 0,
+                }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="absolute w-1 h-1 rounded-full"
+                style={{
+                  background: isPointer ? "hsl(270 100% 65%)" : "hsl(120 100% 50%)",
+                  boxShadow: isPointer
+                    ? "0 0 6px hsl(270 100% 65%)"
+                    : "0 0 6px hsl(120 100% 50%)",
+                  transform: "translate(-50%, -50%)",
+                }}
+              />
+            ))}
+          </>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 
