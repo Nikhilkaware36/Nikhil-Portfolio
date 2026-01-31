@@ -343,6 +343,7 @@ class HackerSoundEngine {
 const soundEngine = new HackerSoundEngine();
 
 export const useSound = () => {
+  // All hooks must be called unconditionally and in the same order
   const playKeypress = useCallback(() => soundEngine.playKeypress(), []);
   const playHover = useCallback(() => soundEngine.playHover(), []);
   const playClick = useCallback(() => soundEngine.playClick(), []);
@@ -351,18 +352,12 @@ export const useSound = () => {
   const playScan = useCallback(() => soundEngine.playScan(), []);
   const playBoot = useCallback(() => soundEngine.playBoot(), []);
   const playNotification = useCallback(() => soundEngine.playNotification(), []);
-  
   const startAmbient = useCallback(() => soundEngine.startAmbient(), []);
   const stopAmbient = useCallback(() => soundEngine.stopAmbient(), []);
   const toggleAmbient = useCallback(() => soundEngine.toggleAmbient(), []);
   const isAmbientPlaying = useCallback(() => soundEngine.isAmbientPlaying(), []);
-  
-  const setEnabled = useCallback((enabled: boolean) => {
-    soundEngine.setEnabled(enabled);
-  }, []);
-  
+  const setEnabled = useCallback((enabled: boolean) => soundEngine.setEnabled(enabled), []);
   const isEnabled = useCallback(() => soundEngine.isEnabled(), []);
-  
   const getAudioContext = useCallback(() => soundEngine.getAudioContext(), []);
   const getAmbientMasterGain = useCallback(() => soundEngine.getAmbientMasterGain(), []);
 
@@ -379,10 +374,10 @@ export const useSound = () => {
     stopAmbient,
     toggleAmbient,
     isAmbientPlaying,
-    getAudioContext,
-    getAmbientMasterGain,
     setEnabled,
     isEnabled,
+    getAudioContext,
+    getAmbientMasterGain,
   };
 };
 
