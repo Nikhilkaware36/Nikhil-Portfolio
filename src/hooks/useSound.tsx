@@ -1,9 +1,15 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useEffect } from "react";
 
 // Web Audio API based sound generator for hacker-themed sounds
 class HackerSoundEngine {
   private audioContext: AudioContext | null = null;
   private enabled: boolean = true;
+  private ambientNodes: {
+    oscillators: OscillatorNode[];
+    gains: GainNode[];
+    masterGain: GainNode | null;
+  } = { oscillators: [], gains: [], masterGain: null };
+  private ambientPlaying: boolean = false;
 
   private getContext(): AudioContext {
     if (!this.audioContext) {
@@ -14,10 +20,136 @@ class HackerSoundEngine {
 
   setEnabled(enabled: boolean) {
     this.enabled = enabled;
+    if (!enabled) {
+      this.stopAmbient();
+    }
   }
 
   isEnabled() {
     return this.enabled;
+  }
+
+  isAmbientPlaying() {
+    return this.ambientPlaying;
+  }
+
+  // Start ambient background sound - subtle cyberpunk hum
+  startAmbient() {
+    if (!this.enabled || this.ambientPlaying) return;
+    
+    const ctx = this.getContext();
+    
+    // Master gain for ambient
+    const masterGain = ctx.createGain();
+    masterGain.gain.setValueAtTime(0, ctx.currentTime);
+    masterGain.gain.linearRampToValueAtTime(0.015, ctx.currentTime + 2); // Fade in
+    masterGain.connect(ctx.destination);
+    
+    this.ambientNodes.masterGain = masterGain;
+
+    // Deep bass drone
+    const bassOsc = ctx.createOscillator();
+    const bassGain = ctx.createGain();
+    bassOsc.type = "sine";
+    bassOsc.frequency.setValueAtTime(55, ctx.currentTime);
+    bassGain.gain.setValueAtTime(0.4, ctx.currentTime);
+    bassOsc.connect(bassGain);
+    bassGain.connect(masterGain);
+    bassOsc.start();
+    this.ambientNodes.oscillators.push(bassOsc);
+    this.ambientNodes.gains.push(bassGain);
+
+    // Sub harmonic
+    const subOsc = ctx.createOscillator();
+    const subGain = ctx.createGain();
+    subOsc.type = "sine";
+    subOsc.frequency.setValueAtTime(110, ctx.currentTime);
+    subGain.gain.setValueAtTime(0.2, ctx.currentTime);
+    subOsc.connect(subGain);
+    subGain.connect(masterGain);
+    subOsc.start();
+    this.ambientNodes.oscillators.push(subOsc);
+    this.ambientNodes.gains.push(subGain);
+
+    // High frequency shimmer with LFO
+    const shimmerOsc = ctx.createOscillator();
+    const shimmerGain = ctx.createGain();
+    const lfo = ctx.createOscillator();
+    const lfoGain = ctx.createGain();
+    
+    shimmerOsc.type = "sine";
+    shimmerOsc.frequency.setValueAtTime(880, ctx.currentTime);
+    shimmerGain.gain.setValueAtTime(0.05, ctx.currentTime);
+    
+    lfo.type = "sine";
+    lfo.frequency.setValueAtTime(0.1, ctx.currentTime);
+    lfoGain.gain.setValueAtTime(0.03, ctx.currentTime);
+    
+    lfo.connect(lfoGain);
+    lfoGain.connect(shimmerGain.gain);
+    shimmerOsc.connect(shimmerGain);
+    shimmerGain.connect(masterGain);
+    
+    lfo.start();
+    shimmerOsc.start();
+    this.ambientNodes.oscillators.push(shimmerOsc, lfo);
+    this.ambientNodes.gains.push(shimmerGain, lfoGain);
+
+    // Subtle digital noise using filtered noise
+    const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
+    const noiseData = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < noiseData.length; i++) {
+      noiseData[i] = (Math.random() * 2 - 1) * 0.01;
+    }
+    const noiseSource = ctx.createBufferSource();
+    noiseSource.buffer = noiseBuffer;
+    noiseSource.loop = true;
+    
+    const noiseFilter = ctx.createBiquadFilter();
+    noiseFilter.type = "lowpass";
+    noiseFilter.frequency.setValueAtTime(200, ctx.currentTime);
+    
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.3, ctx.currentTime);
+    
+    noiseSource.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(masterGain);
+    noiseSource.start();
+
+    this.ambientPlaying = true;
+  }
+
+  // Stop ambient sound
+  stopAmbient() {
+    if (!this.ambientPlaying) return;
+    
+    const ctx = this.getContext();
+    
+    // Fade out
+    if (this.ambientNodes.masterGain) {
+      this.ambientNodes.masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
+    }
+    
+    // Stop after fade
+    setTimeout(() => {
+      this.ambientNodes.oscillators.forEach(osc => {
+        try { osc.stop(); } catch (e) {}
+      });
+      this.ambientNodes = { oscillators: [], gains: [], masterGain: null };
+    }, 600);
+    
+    this.ambientPlaying = false;
+  }
+
+  // Toggle ambient
+  toggleAmbient() {
+    if (this.ambientPlaying) {
+      this.stopAmbient();
+    } else {
+      this.startAmbient();
+    }
+    return this.ambientPlaying;
   }
 
   // Keyboard typing sound
@@ -210,6 +342,11 @@ export const useSound = () => {
   const playBoot = useCallback(() => soundEngine.playBoot(), []);
   const playNotification = useCallback(() => soundEngine.playNotification(), []);
   
+  const startAmbient = useCallback(() => soundEngine.startAmbient(), []);
+  const stopAmbient = useCallback(() => soundEngine.stopAmbient(), []);
+  const toggleAmbient = useCallback(() => soundEngine.toggleAmbient(), []);
+  const isAmbientPlaying = useCallback(() => soundEngine.isAmbientPlaying(), []);
+  
   const setEnabled = useCallback((enabled: boolean) => {
     soundEngine.setEnabled(enabled);
   }, []);
@@ -225,6 +362,10 @@ export const useSound = () => {
     playScan,
     playBoot,
     playNotification,
+    startAmbient,
+    stopAmbient,
+    toggleAmbient,
+    isAmbientPlaying,
     setEnabled,
     isEnabled,
   };
