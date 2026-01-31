@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Folder, ExternalLink, Code, Shield, Eye, Network, Search, Key, Users, Globe, Skull, FileSearch, Link, Bot, Bell, Lock, Brain } from "lucide-react";
 import TerminalCard from "../TerminalCard";
 
@@ -124,38 +125,77 @@ const projects = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.95 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.4 }
+  },
+};
+
 const ProjectsSection = () => {
   return (
     <section id="projects" className="py-24 relative bg-gradient-to-b from-transparent via-muted/5 to-transparent">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           {/* Section header */}
-          <div className="flex items-center gap-3 mb-4">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex items-center gap-3 mb-4"
+          >
             <Folder className="w-6 h-6 text-electric-purple" />
             <h2 className="text-3xl md:text-4xl font-mono font-bold">
               <span className="text-muted-foreground">//</span> The_Arsenal
             </h2>
-          </div>
+          </motion.div>
           
-          <p className="text-muted-foreground mb-12 font-mono text-sm">
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-muted-foreground mb-12 font-mono text-sm"
+          >
             {">"} ls -la ~/projects/ <span className="text-neon-green">| {projects.length} tools found</span>
-          </p>
+          </motion.p>
 
           {/* Projects grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {projects.map((project, index) => (
-              <a
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          >
+            {projects.map((project) => (
+              <motion.a
                 key={project.name}
                 href={project.repo}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block group"
+                variants={itemVariants}
+                whileHover={{ scale: 1.03, y: -5 }}
               >
                 <TerminalCard
                   title={`${project.name.toLowerCase().replace(/\s+/g, '-')}.py`}
                   variant={project.variant}
-                  className="h-full opacity-0 animate-fade-in-up"
-                  style={{ animationDelay: `${index * 50}ms`, animationFillMode: "forwards" } as React.CSSProperties}
+                  className="h-full"
                 >
                   <div className="space-y-3">
                     <div className="flex items-start justify-between">
@@ -190,12 +230,18 @@ const ProjectsSection = () => {
                     </div>
                   </div>
                 </TerminalCard>
-              </a>
+              </motion.a>
             ))}
-          </div>
+          </motion.div>
 
           {/* View all repos link */}
-          <div className="mt-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mt-8 text-center"
+          >
             <a
               href="https://github.com/Nikhilkaware36?tab=repositories"
               target="_blank"
@@ -205,7 +251,7 @@ const ProjectsSection = () => {
               <span>{">"} View all repositories</span>
               <ExternalLink className="w-4 h-4" />
             </a>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

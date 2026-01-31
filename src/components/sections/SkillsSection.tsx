@@ -1,4 +1,5 @@
-import { Cpu, Shield, Code, Terminal, Server, Search, Bug, Lock } from "lucide-react";
+import { motion } from "framer-motion";
+import { Cpu, Shield, Code, Terminal, Lock, Search } from "lucide-react";
 import SkillBar from "../SkillBar";
 
 const skillCategories = [
@@ -46,15 +47,30 @@ const technicalSkills = [
 ];
 
 const techStack = [
-  // Languages
   "Python", "Rust", "Bash", "PowerShell",
-  // Security Tools
   "Kali Linux", "Kali NetHunter", "Burp Suite", "Metasploit", "Wireshark", "Nmap",
-  // Forensics
   "Autopsy", "Volatility", "TheHive", "MISP",
-  // Platforms
   "Linux (Arch/Debian)", "Docker", "Git", "TryHackMe",
 ];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.3 }
+  },
+};
 
 const SkillsSection = () => {
   return (
@@ -62,39 +78,62 @@ const SkillsSection = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           {/* Section header */}
-          <div className="flex items-center gap-3 mb-12">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex items-center gap-3 mb-12"
+          >
             <Cpu className="w-6 h-6 text-neon-green" />
             <h2 className="text-3xl md:text-4xl font-mono font-bold">
               <span className="text-muted-foreground">//</span> Skill_Matrix
             </h2>
-          </div>
+          </motion.div>
 
           {/* Technical Skills Tags */}
-          <div className="mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-12"
+          >
             <h3 className="text-sm font-mono text-muted-foreground mb-4 flex items-center gap-2">
               <Lock className="w-4 h-4" />
               {">"} Technical Expertise
             </h3>
-            <div className="flex flex-wrap gap-3">
-              {technicalSkills.map((skill, index) => (
-                <span
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="flex flex-wrap gap-3"
+            >
+              {technicalSkills.map((skill) => (
+                <motion.span
                   key={skill.name}
-                  className="px-4 py-2 text-sm font-mono bg-card border border-border/50 rounded-lg hover:border-neon-green/50 hover:text-neon-green transition-colors cursor-default opacity-0 animate-fade-in-up"
-                  style={{ animationDelay: `${index * 50}ms`, animationFillMode: "forwards" }}
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.05 }}
+                  className="px-4 py-2 text-sm font-mono bg-card border border-border/50 rounded-lg hover:border-neon-green/50 hover:text-neon-green transition-colors cursor-default"
                 >
                   {skill.name}
-                </span>
+                </motion.span>
               ))}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Skills grid */}
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             {skillCategories.map((category, categoryIndex) => (
-              <div
+              <motion.div
                 key={category.title}
-                className="p-6 bg-card border border-border/50 rounded-lg hover:border-neon-green/30 transition-all opacity-0 animate-fade-in-up"
-                style={{ animationDelay: `${categoryIndex * 150}ms`, animationFillMode: "forwards" }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
+                whileHover={{ scale: 1.02 }}
+                className="p-6 bg-card border border-border/50 rounded-lg hover:border-neon-green/30 transition-all"
               >
                 <div className="flex items-center gap-3 mb-6">
                   <category.icon className={`w-6 h-6 ${category.color}`} />
@@ -113,28 +152,40 @@ const SkillsSection = () => {
                     />
                   ))}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
 
           {/* Tech tags */}
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             <h3 className="text-sm font-mono text-muted-foreground mb-4 flex items-center gap-2">
               <Terminal className="w-4 h-4" />
               {">"} cat ~/tools_and_tech.txt
             </h3>
-            <div className="flex flex-wrap gap-3">
-              {techStack.map((tool, index) => (
-                <span
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="flex flex-wrap gap-3"
+            >
+              {techStack.map((tool) => (
+                <motion.span
                   key={tool}
-                  className="px-3 py-1 text-sm font-mono bg-muted/50 border border-border/50 rounded hover:border-neon-green/50 hover:text-neon-green transition-colors cursor-default opacity-0 animate-fade-in-up"
-                  style={{ animationDelay: `${index * 30}ms`, animationFillMode: "forwards" }}
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.1 }}
+                  className="px-3 py-1 text-sm font-mono bg-muted/50 border border-border/50 rounded hover:border-neon-green/50 hover:text-neon-green transition-colors cursor-default"
                 >
                   {tool}
-                </span>
+                </motion.span>
               ))}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>
