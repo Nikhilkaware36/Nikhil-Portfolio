@@ -3,10 +3,6 @@ import { Search, ExternalLink, Crown, Users, Shield, Sword, Target, Globe, Lock,
 import asuraLogo from "@/assets/asura-legion-logo.png";
 
 const AsuraLegionSection = () => {
-  const handleGoogleSearch = () => {
-    window.open("https://www.google.com/search?q=who+is+founder+of+Asura+Legion", "_blank");
-  };
-
   return (
     <section id="asura-legion" className="py-24 relative overflow-hidden">
       {/* Background effects */}
@@ -132,19 +128,32 @@ const AsuraLegionSection = () => {
               <p className="text-sm text-electric-purple mt-2">— Nikhil Kaware, Founder</p>
             </div>
 
-            {/* Google Search Button */}
-            <motion.button
-              onClick={handleGoogleSearch}
-              className="w-full p-4 bg-gradient-to-r from-electric-purple/20 to-purple-600/20 border border-electric-purple/50 rounded-lg font-mono text-sm flex items-center justify-center gap-3 hover:from-electric-purple/30 hover:to-purple-600/30 hover:border-electric-purple transition-all duration-300 group/btn"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Search className="w-5 h-5 text-electric-purple" />
-              <span className="text-foreground">
-                <span className="text-electric-purple">{">"}</span> Search: "Who is the founder of Asura Legion?"
-              </span>
-              <ExternalLink className="w-4 h-4 text-muted-foreground group-hover/btn:text-electric-purple transition-colors" />
-            </motion.button>
+            {/* Google Search Buttons */}
+            <div className="space-y-3">
+              {[
+                { query: "who+is+founder+of+Asura+Legion", label: "Who is the founder of Asura Legion?" },
+                { query: "who+is+nikhil+kaware", label: "Who is Nikhil Kaware?" },
+                { query: "what+is+Asura+Legion", label: "What is Asura Legion?" },
+              ].map((item, index) => (
+                <motion.button
+                  key={item.query}
+                  onClick={() => window.open(`https://www.google.com/search?q=${item.query}`, "_blank")}
+                  className="w-full p-4 bg-gradient-to-r from-electric-purple/20 to-purple-600/20 border border-electric-purple/50 rounded-lg font-mono text-sm flex items-center justify-center gap-3 hover:from-electric-purple/30 hover:to-purple-600/30 hover:border-electric-purple transition-all duration-300 group/btn"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 + index * 0.1 }}
+                >
+                  <Search className="w-5 h-5 text-electric-purple" />
+                  <span className="text-foreground">
+                    <span className="text-electric-purple">{">"}</span> Search: "{item.label}"
+                  </span>
+                  <ExternalLink className="w-4 h-4 text-muted-foreground group-hover/btn:text-electric-purple transition-colors" />
+                </motion.button>
+              ))}
+            </div>
 
             {/* Decorative elements */}
             <div className="absolute top-4 right-4 text-xs font-mono text-muted-foreground/50 flex items-center gap-2">
