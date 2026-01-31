@@ -1,6 +1,8 @@
-import { motion } from "framer-motion";
-import { Folder, ExternalLink, Code, Shield, Eye, Network, Search, Key, Users, Globe, Skull, FileSearch, Link, Bot, Bell, Lock, Brain } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { Folder, ExternalLink, Code, Shield, Eye, Network, Search, Key, Users, Globe, Skull, FileSearch, Link, Bot, Bell, Lock, Brain, Star } from "lucide-react";
 import TerminalCard from "../TerminalCard";
+import { useSound } from "@/hooks/useSound";
 
 const projects = [
   {
@@ -146,8 +148,11 @@ const itemVariants = {
 };
 
 const ProjectsSection = () => {
+  const { playHover, playClick } = useSound();
+  const sectionRef = useRef<HTMLElement>(null);
+
   return (
-    <section id="projects" className="py-24 relative bg-gradient-to-b from-transparent via-muted/5 to-transparent">
+    <section id="projects" ref={sectionRef} className="py-24 relative bg-gradient-to-b from-transparent via-muted/5 to-transparent">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           {/* Section header */}
@@ -182,7 +187,7 @@ const ProjectsSection = () => {
             viewport={{ once: true }}
             className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           >
-            {projects.map((project) => (
+            {projects.map((project, index) => (
               <motion.a
                 key={project.name}
                 href={project.repo}
@@ -190,7 +195,10 @@ const ProjectsSection = () => {
                 rel="noopener noreferrer"
                 className="block group"
                 variants={itemVariants}
-                whileHover={{ scale: 1.03, y: -5 }}
+                whileHover={{ scale: 1.05, y: -8, rotateY: 5 }}
+                onMouseEnter={playHover}
+                onClick={playClick}
+                style={{ transformStyle: "preserve-3d" }}
               >
                 <TerminalCard
                   title={`${project.name.toLowerCase().replace(/\s+/g, '-')}.py`}
