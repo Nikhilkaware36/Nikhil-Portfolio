@@ -176,20 +176,12 @@ done`}
             transition={{ duration: 0.5, type: "spring" }}
             className="flex justify-center mb-4"
           >
-            <motion.div
-              className="relative"
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            >
+            <div className="relative">
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-neon-green/20 via-electric-purple/20 to-signal-red/20 flex items-center justify-center border border-neon-green/30">
                 <Skull className="w-10 h-10 text-neon-green" />
               </div>
-              <motion.div
-                className="absolute inset-0 rounded-full border-2 border-dashed border-electric-purple/30"
-                animate={{ rotate: [360, 0] }}
-                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-              />
-            </motion.div>
+              <div className="absolute inset-0 rounded-full border-2 border-dashed border-electric-purple/30" />
+            </div>
           </motion.div>
 
           {/* Terminal prompt - enhanced */}
