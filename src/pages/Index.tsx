@@ -17,7 +17,6 @@ import SoundToggle from "../components/SoundToggle";
 import ParticleField from "../components/ParticleField";
 import ScrollProgress from "../components/ScrollProgress";
 import GlitchOverlay from "../components/GlitchOverlay";
-import FloatingActions from "../components/FloatingActions";
 import { useSound } from "@/hooks/useSound";
 
 const Index = () => {
@@ -61,7 +60,6 @@ const Index = () => {
         {/* UI Components */}
         <SoundToggle />
         <TerminalPopup />
-        <FloatingActions />
         <Navigation />
         
         <main>
