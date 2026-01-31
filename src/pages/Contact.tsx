@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { 
-  ArrowLeft, Phone, Mail, MapPin, Clock, 
-  Github, Linkedin, Twitter, MessageSquare,
+  ArrowLeft, Phone, MapPin, Clock, 
+  Github, Linkedin, Instagram, MessageSquare,
   Shield, Zap
 } from "lucide-react";
 import Background3D from "@/components/Background3D";
@@ -10,9 +10,9 @@ import ParticleField from "@/components/ParticleField";
 import { useSound } from "@/hooks/useSound";
 
 const socialLinks = [
-  { name: "GitHub", icon: Github, url: "https://github.com/", handle: "@cyberrat" },
+  { name: "GitHub", icon: Github, url: "https://github.com/nikhilkaware36", handle: "@nikhilkaware36" },
   { name: "LinkedIn", icon: Linkedin, url: "https://linkedin.com/in/", handle: "Nikhil Kaware" },
-  { name: "Twitter", icon: Twitter, url: "https://twitter.com/", handle: "@cyberrat_sec" },
+  { name: "Instagram", icon: Instagram, url: "https://instagram.com/nikhil.kaware.3", handle: "@nikhil.kaware.3" },
 ];
 
 const availabilityStatus = {
