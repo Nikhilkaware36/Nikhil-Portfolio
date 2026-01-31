@@ -10,7 +10,6 @@ const navLinks = [
   { href: "#skills", label: "Skills" },
   { href: "#expertise", label: "Expertise" },
   { href: "#certifications", label: "Vault" },
-  { href: "#testimonials", label: "Reviews" },
   { href: "#asura-legion", label: "Legion" },
 ];
 
