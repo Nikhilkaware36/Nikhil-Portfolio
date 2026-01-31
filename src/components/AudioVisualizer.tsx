@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Activity, BarChart3, AudioWaveform } from "lucide-react";
+import { motion, AnimatePresence, useDragControls } from "framer-motion";
+import { Activity, BarChart3, AudioWaveform, GripVertical } from "lucide-react";
 
 interface AudioVisualizerProps {
   isPlaying: boolean;
@@ -14,8 +14,11 @@ const AudioVisualizer = ({ isPlaying, audioContext, masterGain }: AudioVisualize
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const animationRef = useRef<number>();
+  const constraintsRef = useRef<HTMLDivElement>(null);
+  const dragControls = useDragControls();
   const [isExpanded, setIsExpanded] = useState(false);
   const [mode, setMode] = useState<VisualizationMode>("bars");
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     if (!isPlaying || !audioContext || !masterGain) {
@@ -211,100 +214,130 @@ const AudioVisualizer = ({ isPlaying, audioContext, masterGain }: AudioVisualize
     setMode(mode === "bars" ? "waveform" : "bars");
   };
 
+  const startDrag = (event: React.PointerEvent) => {
+    dragControls.start(event);
+  };
+
   return (
-    <AnimatePresence>
-      {isPlaying && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.8, y: 20 }}
-          transition={{ duration: 0.3 }}
-          className="fixed bottom-6 left-24 z-50"
-        >
+    <>
+      {/* Drag constraints - full viewport */}
+      <div ref={constraintsRef} className="fixed inset-0 pointer-events-none z-40" />
+      
+      <AnimatePresence>
+        {isPlaying && (
           <motion.div
-            className={`bg-card/90 backdrop-blur-sm border border-electric-purple/30 rounded-lg overflow-hidden transition-all ${
-              isExpanded ? "p-3" : "p-2"
-            }`}
-            style={{
-              boxShadow: "0 0 30px hsl(270 100% 65% / 0.2)",
-            }}
-            whileHover={{ borderColor: "hsl(270 100% 65% / 0.6)" }}
+            drag
+            dragControls={dragControls}
+            dragConstraints={constraintsRef}
+            dragElastic={0.1}
+            dragMomentum={false}
+            onDragStart={() => setIsDragging(true)}
+            onDragEnd={() => setIsDragging(false)}
+            initial={{ opacity: 0, scale: 0.8, x: 0, y: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+            className="fixed bottom-6 left-24 z-50"
+            style={{ touchAction: "none" }}
           >
-            {/* Header */}
-            <div
-              className="flex items-center gap-2 cursor-pointer mb-2"
-              onClick={() => setIsExpanded(!isExpanded)}
-            >
-              <Activity className="w-3 h-3 text-electric-purple animate-pulse" />
-              <span className="text-[10px] font-mono text-muted-foreground">
-                AUDIO_STREAM
-              </span>
-              
-              {/* Mode toggle button */}
-              <motion.button
-                onClick={toggleMode}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="ml-auto p-1 rounded hover:bg-electric-purple/20 transition-colors"
-                title={`Switch to ${mode === "bars" ? "waveform" : "bars"} mode`}
-              >
-                {mode === "bars" ? (
-                  <AudioWaveform className="w-3 h-3 text-neon-green" />
-                ) : (
-                  <BarChart3 className="w-3 h-3 text-electric-purple" />
-                )}
-              </motion.button>
-              
-              <div className="flex gap-0.5">
-                {[...Array(3)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="w-1 h-2 bg-neon-green rounded-full"
-                    animate={{ scaleY: [0.3, 1, 0.3] }}
-                    transition={{
-                      duration: 0.5,
-                      delay: i * 0.1,
-                      repeat: Infinity,
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Canvas */}
             <motion.div
-              initial={false}
-              animate={{
-                height: isExpanded ? 80 : 40,
-                width: isExpanded ? 200 : 120,
+              className={`bg-card/90 backdrop-blur-sm border rounded-lg overflow-hidden transition-all ${
+                isExpanded ? "p-3" : "p-2"
+              } ${isDragging ? "border-neon-green/60" : "border-electric-purple/30"}`}
+              style={{
+                boxShadow: isDragging 
+                  ? "0 0 40px hsl(120 100% 50% / 0.3)" 
+                  : "0 0 30px hsl(270 100% 65% / 0.2)",
               }}
-              transition={{ duration: 0.2 }}
+              whileHover={{ borderColor: "hsl(270 100% 65% / 0.6)" }}
             >
-              <canvas
-                ref={canvasRef}
-                width={isExpanded ? 200 : 120}
-                height={isExpanded ? 80 : 40}
-                className="rounded"
-              />
-            </motion.div>
+              {/* Header with drag handle */}
+              <div className="flex items-center gap-1 mb-2">
+                {/* Drag handle */}
+                <div
+                  onPointerDown={startDrag}
+                  className="cursor-grab active:cursor-grabbing p-0.5 -ml-1 hover:bg-muted/50 rounded transition-colors"
+                  title="Drag to move"
+                >
+                  <GripVertical className="w-3 h-3 text-muted-foreground" />
+                </div>
+                
+                <Activity className="w-3 h-3 text-electric-purple animate-pulse" />
+                <span 
+                  className="text-[10px] font-mono text-muted-foreground cursor-pointer"
+                  onClick={() => !isDragging && setIsExpanded(!isExpanded)}
+                >
+                  AUDIO_STREAM
+                </span>
+                
+                {/* Mode toggle button */}
+                <motion.button
+                  onClick={toggleMode}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="ml-auto p-1 rounded hover:bg-electric-purple/20 transition-colors"
+                  title={`Switch to ${mode === "bars" ? "waveform" : "bars"} mode`}
+                >
+                  {mode === "bars" ? (
+                    <AudioWaveform className="w-3 h-3 text-neon-green" />
+                  ) : (
+                    <BarChart3 className="w-3 h-3 text-electric-purple" />
+                  )}
+                </motion.button>
+                
+                <div className="flex gap-0.5">
+                  {[...Array(3)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="w-1 h-2 bg-neon-green rounded-full"
+                      animate={{ scaleY: [0.3, 1, 0.3] }}
+                      transition={{
+                        duration: 0.5,
+                        delay: i * 0.1,
+                        repeat: Infinity,
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
 
-            {/* Status bar */}
-            <div className="flex items-center justify-between mt-2">
-              <span className="text-[8px] font-mono text-neon-green flex items-center gap-1">
-                <span className="w-1.5 h-1.5 bg-neon-green rounded-full animate-pulse" />
-                LIVE
-              </span>
-              <span className="text-[8px] font-mono text-muted-foreground uppercase">
-                {mode === "bars" 
-                  ? (isExpanded ? "16-BAND" : "MINI") 
-                  : (isExpanded ? "WAVEFORM" : "WAVE")
-                }
-              </span>
-            </div>
+              {/* Canvas */}
+              <motion.div
+                initial={false}
+                animate={{
+                  height: isExpanded ? 80 : 40,
+                  width: isExpanded ? 200 : 120,
+                }}
+                transition={{ duration: 0.2 }}
+                onClick={() => !isDragging && setIsExpanded(!isExpanded)}
+                className="cursor-pointer"
+              >
+                <canvas
+                  ref={canvasRef}
+                  width={isExpanded ? 200 : 120}
+                  height={isExpanded ? 80 : 40}
+                  className="rounded pointer-events-none"
+                />
+              </motion.div>
+
+              {/* Status bar */}
+              <div className="flex items-center justify-between mt-2">
+                <span className="text-[8px] font-mono text-neon-green flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 bg-neon-green rounded-full animate-pulse" />
+                  LIVE
+                </span>
+                <span className="text-[8px] font-mono text-muted-foreground uppercase">
+                  {mode === "bars" 
+                    ? (isExpanded ? "16-BAND" : "MINI") 
+                    : (isExpanded ? "WAVEFORM" : "WAVE")
+                  }
+                </span>
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
