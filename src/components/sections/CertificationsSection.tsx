@@ -1,88 +1,55 @@
 import { motion } from "framer-motion";
-import { Award, Calendar, CheckCircle, Shield, BookOpen, Target, Users } from "lucide-react";
+import { Award, Calendar, CheckCircle, Shield, BookOpen, Target, Users, Lock, Bug, Server, Globe, Brain, Fingerprint, Network, Eye } from "lucide-react";
 
 const certifications = [
-  {
-    name: "Certified Phishing Prevention Specialist",
-    acronym: "CPPS",
-    date: "December 2025",
-    issuer: "Security Certification Body",
-    icon: Shield,
-    color: "border-neon-green",
-    glow: "group-hover:shadow-[0_0_20px_hsl(120_100%_50%/0.3)]",
-  },
-  {
-    name: "Cybersecurity Career Starter Certification",
-    acronym: "CCSC",
-    date: "December 2025",
-    issuer: "Industry Certification",
-    icon: Target,
-    color: "border-electric-purple",
-    glow: "group-hover:shadow-[0_0_20px_hsl(270_100%_65%/0.3)]",
-  },
-  {
-    name: "Foundations of Log Analysis for Cyber Defense",
-    acronym: "FLACD",
-    date: "December 2025",
-    issuer: "Blue Team Training",
-    icon: BookOpen,
-    color: "border-neon-green",
-    glow: "group-hover:shadow-[0_0_20px_hsl(120_100%_50%/0.3)]",
-  },
-  {
-    name: "Healthcare Hacking",
-    acronym: "HCH",
-    date: "December 2025",
-    issuer: "Specialized Training",
-    icon: Shield,
-    color: "border-signal-red",
-    glow: "group-hover:shadow-[0_0_20px_hsl(0_85%_55%/0.3)]",
-  },
-  {
-    name: "Purple Team - Active Directory and AzureAD v1",
-    acronym: "PT-AD",
-    date: "December 2025",
-    issuer: "Purple Team Academy",
-    icon: Users,
-    color: "border-electric-purple",
-    glow: "group-hover:shadow-[0_0_20px_hsl(270_100%_65%/0.3)]",
-  },
-  {
-    name: "TryHackMe – Advent of Cyber 2025",
-    acronym: "THM-AOC",
-    date: "December 2025",
-    issuer: "TryHackMe",
-    icon: Target,
-    color: "border-neon-green",
-    glow: "group-hover:shadow-[0_0_20px_hsl(120_100%_50%/0.3)]",
-  },
-  {
-    name: "Certified Cybersecurity Educator Professional",
-    acronym: "CCEP",
-    date: "December 2025",
-    issuer: "Education Certification",
-    icon: BookOpen,
-    color: "border-electric-purple",
-    glow: "group-hover:shadow-[0_0_20px_hsl(270_100%_65%/0.3)]",
-  },
+  // Row 1 - Core Security
+  { name: "Certified Phishing Prevention Specialist", acronym: "CPPS", date: "Dec 2025", icon: Shield, color: "border-neon-green" },
+  { name: "Cybersecurity Career Starter Certification", acronym: "CCSC", date: "Dec 2025", icon: Target, color: "border-electric-purple" },
+  { name: "Foundations of Log Analysis for Cyber Defense", acronym: "FLACD", date: "Dec 2025", icon: BookOpen, color: "border-neon-green" },
+  { name: "Healthcare Hacking", acronym: "HCH", date: "Dec 2025", icon: Shield, color: "border-signal-red" },
+  { name: "Purple Team - Active Directory and AzureAD v1", acronym: "PT-AD", date: "Dec 2025", icon: Users, color: "border-electric-purple" },
+  // Row 2 - Training Platforms
+  { name: "TryHackMe – Advent of Cyber 2025", acronym: "THM-AOC", date: "Dec 2025", icon: Target, color: "border-neon-green" },
+  { name: "Certified Cybersecurity Educator Professional", acronym: "CCEP", date: "Dec 2025", icon: BookOpen, color: "border-electric-purple" },
+  { name: "SOC Analyst Level 1 Path", acronym: "SOC-L1", date: "Dec 2025", icon: Eye, color: "border-neon-green" },
+  { name: "Web Application Penetration Testing", acronym: "WAPT", date: "Dec 2025", icon: Bug, color: "border-signal-red" },
+  { name: "Linux Fundamentals & Security", acronym: "LFS", date: "Nov 2025", icon: Server, color: "border-neon-green" },
+  // Row 3 - Offensive Security
+  { name: "Ethical Hacking Essentials", acronym: "EHE", date: "Nov 2025", icon: Lock, color: "border-signal-red" },
+  { name: "Network Security Fundamentals", acronym: "NSF", date: "Nov 2025", icon: Network, color: "border-neon-green" },
+  { name: "OSINT Fundamentals", acronym: "OSINT-F", date: "Nov 2025", icon: Globe, color: "border-electric-purple" },
+  { name: "Intro to Digital Forensics", acronym: "IDF", date: "Oct 2025", icon: Fingerprint, color: "border-electric-purple" },
+  { name: "Malware Analysis Basics", acronym: "MAB", date: "Oct 2025", icon: Bug, color: "border-signal-red" },
+  // Row 4 - Cloud & Modern
+  { name: "Cloud Security Fundamentals", acronym: "CSF", date: "Oct 2025", icon: Server, color: "border-neon-green" },
+  { name: "Incident Response Fundamentals", acronym: "IRF", date: "Oct 2025", icon: Shield, color: "border-signal-red" },
+  { name: "Threat Intelligence Basics", acronym: "TIB", date: "Sep 2025", icon: Brain, color: "border-electric-purple" },
+  { name: "Security Operations Center Basics", acronym: "SOC-B", date: "Sep 2025", icon: Eye, color: "border-neon-green" },
+  { name: "Python for Cybersecurity", acronym: "PY-SEC", date: "Sep 2025", icon: BookOpen, color: "border-neon-green" },
+  // Row 5 - Additional
+  { name: "Dark Web Investigation Fundamentals", acronym: "DWIF", date: "Sep 2025", icon: Globe, color: "border-electric-purple" },
+  { name: "Bug Bounty Hunter Path", acronym: "BBH", date: "Aug 2025", icon: Bug, color: "border-signal-red" },
+  { name: "Vulnerability Assessment Professional", acronym: "VAP", date: "Aug 2025", icon: Target, color: "border-signal-red" },
+  { name: "Cryptography Essentials", acronym: "CRYPT", date: "Aug 2025", icon: Lock, color: "border-neon-green" },
+  { name: "Red Team Operations Intro", acronym: "RTO-I", date: "Jul 2025", icon: Shield, color: "border-signal-red" },
+  { name: "Blue Team Junior Analyst", acronym: "BTJA", date: "Jul 2025", icon: Shield, color: "border-neon-green" },
 ];
 
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
+    transition: { staggerChildren: 0.03 },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
   visible: { 
     opacity: 1, 
     y: 0,
-    transition: { duration: 0.5 }
+    scale: 1,
+    transition: { duration: 0.3 }
   },
 };
 
@@ -90,7 +57,7 @@ const CertificationsSection = () => {
   return (
     <section id="certifications" className="py-24 relative bg-gradient-to-b from-transparent via-muted/5 to-transparent">
       <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           {/* Section header */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -121,34 +88,33 @@ const CertificationsSection = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
           >
             {certifications.map((cert) => (
               <motion.div
                 key={cert.name}
                 variants={itemVariants}
-                whileHover={{ scale: 1.02, y: -5 }}
-                className={`p-6 bg-card border ${cert.color}/50 rounded-lg group transition-all duration-300 ${cert.glow} hover:border-opacity-100`}
+                whileHover={{ scale: 1.03, y: -3 }}
+                className={`p-4 bg-card border ${cert.color}/40 rounded-lg group transition-all duration-300 hover:border-opacity-100 hover:shadow-lg`}
               >
-                <div className="flex items-start justify-between gap-4 mb-4">
-                  <cert.icon className="w-8 h-8 text-neon-green flex-shrink-0" />
-                  <span className="px-2 py-1 text-xs font-mono font-bold bg-muted rounded text-neon-green">
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <cert.icon className="w-5 h-5 text-neon-green flex-shrink-0" />
+                  <span className="px-1.5 py-0.5 text-[10px] font-mono font-bold bg-muted rounded text-neon-green">
                     {cert.acronym}
                   </span>
                 </div>
                 
-                <h3 className="font-mono font-semibold text-foreground leading-tight mb-3 text-sm">
+                <h3 className="font-mono font-medium text-foreground leading-tight text-xs mb-2 line-clamp-2">
                   {cert.name}
                 </h3>
 
-                <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center justify-between text-[10px]">
                   <div className="flex items-center gap-1 text-muted-foreground">
-                    <Calendar className="w-3 h-3" />
+                    <Calendar className="w-2.5 h-2.5" />
                     {cert.date}
                   </div>
-                  <div className="flex items-center gap-1 text-neon-green">
-                    <CheckCircle className="w-3 h-3" />
-                    <span>Verified</span>
+                  <div className="flex items-center gap-0.5 text-neon-green">
+                    <CheckCircle className="w-2.5 h-2.5" />
                   </div>
                 </div>
               </motion.div>
@@ -164,11 +130,11 @@ const CertificationsSection = () => {
             className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4"
           >
             {[
-              { value: certifications.length, label: "Certifications", color: "text-neon-green" },
+              { value: `${certifications.length}+`, label: "Certifications", color: "text-neon-green" },
               { value: "2025", label: "Latest Year", color: "text-electric-purple" },
-              { value: "5+", label: "Domains", color: "text-signal-red" },
+              { value: "10+", label: "Domains", color: "text-signal-red" },
               { value: "∞", label: "Learning", color: "text-neon-green" },
-            ].map((stat, index) => (
+            ].map((stat) => (
               <motion.div
                 key={stat.label}
                 whileHover={{ scale: 1.05 }}
