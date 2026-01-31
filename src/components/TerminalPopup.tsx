@@ -192,36 +192,37 @@ const TerminalPopup = () => {
 
   return (
     <>
-      {/* Floating terminal button */}
+      {/* Floating terminal button - LEFT SIDE */}
       <motion.button
-        initial={{ x: 100 }}
+        initial={{ x: -100 }}
         animate={{ x: 0 }}
         onClick={() => setIsOpen(true)}
-        className={`fixed right-0 top-1/2 -translate-y-1/2 z-50 p-3 bg-card border border-neon-green/50 rounded-l-lg text-neon-green hover:bg-neon-green/10 transition-all group ${
+        className={`fixed left-0 top-1/2 -translate-y-1/2 z-50 p-3 bg-card border border-neon-green/50 rounded-r-lg text-neon-green hover:bg-neon-green/10 transition-all group ${
           isOpen ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
         style={{
           boxShadow: "0 0 20px hsl(120 100% 50% / 0.2)",
         }}
+        whileHover={{ x: 5 }}
       >
         <Terminal className="w-6 h-6" />
-        <span className="absolute right-full mr-2 top-1/2 -translate-y-1/2 px-2 py-1 bg-card border border-border rounded text-xs font-mono whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+        <span className="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-2 py-1 bg-card border border-border rounded text-xs font-mono whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
           Open Terminal
         </span>
       </motion.button>
 
-      {/* Terminal window */}
+      {/* Terminal window - LEFT SIDE */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ x: 400, opacity: 0 }}
+            initial={{ x: -450, opacity: 0 }}
             animate={{ 
               x: 0, 
               opacity: 1,
               height: isMinimized ? "auto" : "500px"
             }}
-            exit={{ x: 400, opacity: 0 }}
-            className="fixed right-4 bottom-4 w-[450px] bg-card border border-neon-green/30 rounded-lg overflow-hidden z-50 flex flex-col"
+            exit={{ x: -450, opacity: 0 }}
+            className="fixed left-4 bottom-4 w-[450px] bg-card border border-neon-green/30 rounded-lg overflow-hidden z-50 flex flex-col"
             style={{
               boxShadow: "0 0 40px hsl(120 100% 50% / 0.15)",
             }}
