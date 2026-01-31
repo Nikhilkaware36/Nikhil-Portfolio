@@ -20,14 +20,19 @@ import { useSound } from "@/hooks/useSound";
 
 const Index = () => {
   const [showIntro, setShowIntro] = useState(true);
-  const { playBoot, playSuccess } = useSound();
+  const { playBoot, playSuccess, startAmbient } = useSound();
 
   useEffect(() => {
     if (!showIntro) {
-      // Play boot sound when intro completes
+      // Play boot sound and start ambient when intro completes
       playSuccess();
+      // Start ambient sound after a short delay for immersion
+      const ambientTimer = setTimeout(() => {
+        startAmbient();
+      }, 1500);
+      return () => clearTimeout(ambientTimer);
     }
-  }, [showIntro, playSuccess]);
+  }, [showIntro, playSuccess, startAmbient]);
 
   const handleIntroComplete = () => {
     playBoot();

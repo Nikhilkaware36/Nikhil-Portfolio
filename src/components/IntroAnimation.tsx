@@ -573,7 +573,7 @@ const IntroAnimation = ({ onComplete }: IntroAnimationProps) => {
         </div>
       </div>
 
-      {/* Door animation */}
+      {/* Door animation with epic reveal */}
       <AnimatePresence>
         {doorsOpen && (
           <>
@@ -582,17 +582,27 @@ const IntroAnimation = ({ onComplete }: IntroAnimationProps) => {
               className="fixed top-0 left-0 w-1/2 h-full bg-background z-[200]"
               initial={{ x: 0 }}
               animate={{ x: "-100%" }}
-              transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+              transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
             >
               <div className="absolute inset-0 grid-bg opacity-30" />
-              <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-signal-red/50 to-transparent" />
+              <div className="absolute inset-y-0 right-0 w-2 bg-gradient-to-l from-signal-red via-signal-red/50 to-transparent" />
               <motion.div
-                className="absolute right-8 top-1/2 -translate-y-1/2 text-8xl font-mono font-bold text-signal-red/10"
-                animate={{ x: [-10, 10, -10] }}
-                transition={{ duration: 0.3, repeat: Infinity }}
+                className="absolute right-8 top-1/2 -translate-y-1/2 text-9xl font-mono font-bold text-signal-red/20"
+                animate={{ x: [-10, 10, -10], opacity: [0.2, 0.4, 0.2] }}
+                transition={{ duration: 0.2, repeat: Infinity }}
               >
                 {"<"}
               </motion.div>
+              {/* Glitch lines on door */}
+              {[...Array(5)].map((_, i) => (
+                <motion.div
+                  key={`left-line-${i}`}
+                  className="absolute left-0 right-0 h-1 bg-signal-red/30"
+                  style={{ top: `${20 + i * 15}%` }}
+                  animate={{ scaleX: [0, 1, 0], x: ["-100%", "0%", "100%"] }}
+                  transition={{ duration: 0.3, delay: i * 0.05, repeat: 2 }}
+                />
+              ))}
             </motion.div>
             
             {/* Right door */}
@@ -600,26 +610,119 @@ const IntroAnimation = ({ onComplete }: IntroAnimationProps) => {
               className="fixed top-0 right-0 w-1/2 h-full bg-background z-[200]"
               initial={{ x: 0 }}
               animate={{ x: "100%" }}
-              transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+              transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
             >
               <div className="absolute inset-0 grid-bg opacity-30" />
-              <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-electric-purple/50 to-transparent" />
+              <div className="absolute inset-y-0 left-0 w-2 bg-gradient-to-r from-electric-purple via-electric-purple/50 to-transparent" />
               <motion.div
-                className="absolute left-8 top-1/2 -translate-y-1/2 text-8xl font-mono font-bold text-electric-purple/10"
-                animate={{ x: [10, -10, 10] }}
-                transition={{ duration: 0.3, repeat: Infinity }}
+                className="absolute left-8 top-1/2 -translate-y-1/2 text-9xl font-mono font-bold text-electric-purple/20"
+                animate={{ x: [10, -10, 10], opacity: [0.2, 0.4, 0.2] }}
+                transition={{ duration: 0.2, repeat: Infinity }}
               >
                 {">"}
               </motion.div>
+              {/* Glitch lines on door */}
+              {[...Array(5)].map((_, i) => (
+                <motion.div
+                  key={`right-line-${i}`}
+                  className="absolute left-0 right-0 h-1 bg-electric-purple/30"
+                  style={{ top: `${25 + i * 15}%` }}
+                  animate={{ scaleX: [0, 1, 0], x: ["100%", "0%", "-100%"] }}
+                  transition={{ duration: 0.3, delay: i * 0.05, repeat: 2 }}
+                />
+              ))}
             </motion.div>
 
-            {/* Center flash */}
+            {/* Epic center reveal animation */}
             <motion.div
-              className="fixed inset-0 z-[199]"
-              style={{ background: "radial-gradient(circle, hsl(0 85% 55% / 0.3) 0%, transparent 50%)" }}
+              className="fixed inset-0 z-[198] flex items-center justify-center pointer-events-none"
               initial={{ opacity: 1 }}
               animate={{ opacity: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 1.5, delay: 0.3 }}
+            >
+              {/* Expanding rings */}
+              {[...Array(4)].map((_, i) => (
+                <motion.div
+                  key={`ring-${i}`}
+                  className="absolute rounded-full border-2"
+                  style={{
+                    borderColor: i % 2 === 0 ? "hsl(0 85% 55% / 0.5)" : "hsl(270 100% 65% / 0.5)",
+                  }}
+                  initial={{ width: 0, height: 0, opacity: 1 }}
+                  animate={{ 
+                    width: ["0vw", "150vw"],
+                    height: ["0vw", "150vw"],
+                    opacity: [1, 0],
+                  }}
+                  transition={{ duration: 1.2, delay: 0.1 + i * 0.15, ease: "easeOut" }}
+                />
+              ))}
+
+              {/* Glitch flash effect */}
+              <motion.div
+                className="absolute inset-0"
+                style={{ background: "linear-gradient(135deg, hsl(0 85% 55% / 0.3), hsl(270 100% 65% / 0.3))" }}
+                animate={{ 
+                  opacity: [0, 1, 0, 1, 0],
+                  x: [0, 5, -5, 3, 0],
+                }}
+                transition={{ duration: 0.4, times: [0, 0.2, 0.4, 0.6, 1] }}
+              />
+
+              {/* Matrix rain burst */}
+              {[...Array(20)].map((_, i) => (
+                <motion.div
+                  key={`burst-${i}`}
+                  className="absolute text-neon-green font-mono text-lg"
+                  style={{
+                    left: `${50 + (Math.random() - 0.5) * 100}%`,
+                    top: "50%",
+                  }}
+                  initial={{ opacity: 1, y: 0, scale: 1 }}
+                  animate={{ 
+                    opacity: 0,
+                    y: (Math.random() - 0.5) * 500,
+                    x: (Math.random() - 0.5) * 500,
+                    scale: 0,
+                    rotate: Math.random() * 360,
+                  }}
+                  transition={{ duration: 0.8, delay: 0.2 + Math.random() * 0.2, ease: "easeOut" }}
+                >
+                  {["0", "1", "R", "A", "T", "◆", "▲", "●"][Math.floor(Math.random() * 8)]}
+                </motion.div>
+              ))}
+
+              {/* Center RAT text reveal */}
+              <motion.div
+                className="text-6xl md:text-8xl font-mono font-bold"
+                style={{
+                  background: "linear-gradient(135deg, hsl(0 85% 55%), hsl(270 100% 65%))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  textShadow: "0 0 60px hsl(0 85% 55% / 0.5)",
+                }}
+                initial={{ scale: 0.5, opacity: 0, rotateX: 90 }}
+                animate={{ scale: [0.5, 1.5, 1], opacity: [0, 1, 0], rotateX: [90, 0, -30] }}
+                transition={{ duration: 0.8, times: [0, 0.5, 1] }}
+              >
+                🐀 RAT
+              </motion.div>
+            </motion.div>
+
+            {/* Scanlines during transition */}
+            <motion.div
+              className="fixed inset-0 z-[197] pointer-events-none scanlines"
+              initial={{ opacity: 0.8 }}
+              animate={{ opacity: 0 }}
+              transition={{ duration: 1.5, delay: 0.5 }}
+            />
+
+            {/* Final flash out */}
+            <motion.div
+              className="fixed inset-0 z-[196] bg-background"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 0.8, 0] }}
+              transition={{ duration: 0.6, delay: 0.8, times: [0, 0.3, 1] }}
             />
           </>
         )}
