@@ -1,8 +1,9 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Terminal, ChevronRight, Skull, Shield, Wifi, Lock, Eye, Zap, Bug, Server, MousePointer2 } from "lucide-react";
 import asuraLogo from "@/assets/asura-legion-logo.png";
 import cyberRat from "@/assets/cyber-rat.jpg";
+import { useSound } from "@/hooks/useSound";
 
 interface IntroAnimationProps {
   onComplete: () => void;
@@ -255,6 +256,7 @@ const IntroAnimation = ({ onComplete }: IntroAnimationProps) => {
   const [currentLine, setCurrentLine] = useState(0);
   const [doorsOpen, setDoorsOpen] = useState(false);
   const [glitchActive, setGlitchActive] = useState(false);
+  const { playKeypress, playClick, playScan, playSuccess, playGlitch } = useSound();
 
   // Random glitch effect
   useEffect(() => {
@@ -269,20 +271,24 @@ const IntroAnimation = ({ onComplete }: IntroAnimationProps) => {
 
   // Phase transitions
   useEffect(() => {
+    playScan();
     const timer = setTimeout(() => setPhase("boot"), 3000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [playScan]);
 
   useEffect(() => {
     if (phase === "boot" && currentLine < bootSequence.length) {
+      // Play typing sound for each line
+      playKeypress();
       const timer = setTimeout(() => {
         setCurrentLine(prev => prev + 1);
       }, 180);
       return () => clearTimeout(timer);
     } else if (phase === "boot" && currentLine >= bootSequence.length) {
+      playSuccess();
       setTimeout(() => setPhase("reveal"), 400);
     }
-  }, [phase, currentLine]);
+  }, [phase, currentLine, playKeypress, playSuccess]);
 
   useEffect(() => {
     if (phase === "reveal") {
@@ -292,12 +298,14 @@ const IntroAnimation = ({ onComplete }: IntroAnimationProps) => {
 
   useEffect(() => {
     if (phase === "doors") {
+      playGlitch();
       setTimeout(() => setDoorsOpen(true), 300);
       setTimeout(onComplete, 1100);
     }
-  }, [phase, onComplete]);
+  }, [phase, onComplete, playGlitch]);
 
   const handleEnter = () => {
+    playClick();
     setDoorsOpen(true);
     setTimeout(onComplete, 800);
   };
