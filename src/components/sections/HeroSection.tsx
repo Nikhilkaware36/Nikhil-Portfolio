@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import GlitchText from "../GlitchText";
 import TypewriterText from "../TypewriterText";
+import GitHubStats from "../GitHubStats";
 import { Terminal, Shield, ChevronRight, Github, Linkedin, Instagram, Download, MapPin, Mail, Zap, Binary } from "lucide-react";
 import { useSound } from "@/hooks/useSound";
 import { useEffect, useState } from "react";
@@ -328,6 +329,9 @@ done`}
               Asura Legion Member
             </motion.span>
           </motion.div>
+
+          {/* GitHub Stats - Auto-synced */}
+          <GitHubStats />
 
           {/* Social links - enhanced with glow */}
           <motion.div 
