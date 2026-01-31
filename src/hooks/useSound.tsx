@@ -1,4 +1,4 @@
-import { useCallback, useRef, useEffect } from "react";
+import { useCallback } from "react";
 
 // Web Audio API based sound generator for hacker-themed sounds
 class HackerSoundEngine {
@@ -140,6 +140,16 @@ class HackerSoundEngine {
     }, 600);
     
     this.ambientPlaying = false;
+  }
+
+  // Get audio context for visualizer
+  getAudioContext(): AudioContext | null {
+    return this.audioContext;
+  }
+
+  // Get master gain for visualizer
+  getAmbientMasterGain(): GainNode | null {
+    return this.ambientNodes.masterGain;
   }
 
   // Toggle ambient
@@ -352,6 +362,9 @@ export const useSound = () => {
   }, []);
   
   const isEnabled = useCallback(() => soundEngine.isEnabled(), []);
+  
+  const getAudioContext = useCallback(() => soundEngine.getAudioContext(), []);
+  const getAmbientMasterGain = useCallback(() => soundEngine.getAmbientMasterGain(), []);
 
   return {
     playKeypress,
@@ -366,6 +379,8 @@ export const useSound = () => {
     stopAmbient,
     toggleAmbient,
     isAmbientPlaying,
+    getAudioContext,
+    getAmbientMasterGain,
     setEnabled,
     isEnabled,
   };
