@@ -1,15 +1,22 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Menu, X, Terminal, Wifi } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X, Terminal, Wifi, Flag, Mail } from "lucide-react";
 import { useSound } from "@/hooks/useSound";
 
 const navLinks = [
   { href: "#about", label: "About" },
   { href: "#projects", label: "Arsenal" },
   { href: "#skills", label: "Skills" },
+  { href: "#expertise", label: "Expertise" },
   { href: "#certifications", label: "Vault" },
+  { href: "#testimonials", label: "Reviews" },
   { href: "#asura-legion", label: "Legion" },
-  { href: "#hobbies", label: "Human" },
+];
+
+const pageLinks = [
+  { href: "/ctf-writeups", label: "CTF", icon: Flag },
+  { href: "/contact", label: "Contact", icon: Mail },
 ];
 
 const Navigation = () => {
@@ -119,6 +126,21 @@ const Navigation = () => {
                 </span>
               </motion.a>
             ))}
+            
+            {/* Page links */}
+            <div className="h-4 w-px bg-border/50 mx-2" />
+            {pageLinks.map((link) => (
+              <Link
+                key={link.href}
+                to={link.href}
+                onMouseEnter={playHover}
+                onClick={playClick}
+                className="px-3 py-2 font-mono text-xs rounded-md transition-all text-muted-foreground hover:text-signal-red hover:bg-signal-red/10 flex items-center gap-1.5"
+              >
+                <link.icon className="w-3 h-3" />
+                {link.label}
+              </Link>
+            ))}
           </div>
 
           {/* Mobile menu button */}
@@ -167,6 +189,23 @@ const Navigation = () => {
                   <span className="text-neon-green mr-2">{">"}</span>
                   {link.label}
                 </motion.a>
+              ))}
+              
+              {/* Page links in mobile */}
+              <div className="h-px bg-border/50 my-2" />
+              {pageLinks.map((link, index) => (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  onClick={() => {
+                    setIsOpen(false);
+                    playClick();
+                  }}
+                  className="font-mono text-sm py-3 px-4 rounded-lg transition-colors text-muted-foreground hover:text-signal-red hover:bg-signal-red/10 flex items-center gap-2"
+                >
+                  <link.icon className="w-4 h-4 text-signal-red" />
+                  {link.label}
+                </Link>
               ))}
             </div>
           </div>
